@@ -1,0 +1,19 @@
+{
+  "name": "cedt-sw-dev-campground-project",
+  "version": "1.0.0",
+  "description": "2110503 Software development final project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "author": "Gift, Champ, Puifai",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
