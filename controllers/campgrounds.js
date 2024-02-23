@@ -45,11 +45,20 @@ exports.getCampground = async (req, res, next) => {
 // @desc:    Create a new campground
 // @route:   POST /api/v1/campgrounds
 // @access:  Private
-exports.createCampground = (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        msg: 'Create new campgounds'
-    });
+exports.createCampground = async (req, res, next) => {
+    try {
+        const campground = await CampgroundDB.create(req.body);
+
+        res.status(201).json({
+            success: true,
+            data: campground
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            error: err.message
+        })
+    }
 };
 
 // @desc:    Update a campground with an id
