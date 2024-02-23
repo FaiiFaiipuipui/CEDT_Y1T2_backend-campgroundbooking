@@ -56,7 +56,23 @@
 			"name": "create campground",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "JSON Type",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"อุทยาน 100 ปี จุฬาลงกรณ์มหาวิทยาลัย\",\r\n    \"address\": \"254, ถ.พญาไท, แขวงวังใหม่, เขตปทุมวัน, กรุงเทพมหานครฯ\",\r\n    \"district\": \"ปทุมวัน\",\r\n    \"province\": \"กรุงเทพหมานครฯ\",\r\n    \"tel\": \"02-2181686\",\r\n    \"region\": \"กลาง\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "{{lc}}/api/v1/campgrounds/",
 					"host": [
@@ -76,7 +92,23 @@
 			"name": "update campground info",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "JSON Type",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"อุทยาน 100 ปี จุฬาลงกรณ์มหาวิทยาลัย\",\r\n    \"address\": \"254, ถ.พญาไท, แขวงวังใหม่, เขตปทุมวัน, กรุงเทพมหานครฯ\",\r\n    \"district\": \"ปทุมวัน\",\r\n    \"province\": \"กรุงเทพมหานครฯ\",\r\n    \"tel\": \"02-2181686\",\r\n    \"region\": \"กลาง\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "{{lc}}/api/v1/campgrounds/:id",
 					"host": [
@@ -91,7 +123,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": ""
+							"value": "65d80fe853c5052a087345d4"
 						}
 					]
 				}
