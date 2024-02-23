@@ -71,7 +71,9 @@ exports.updateCampground = async (req, res, next) => {
             runValidators: true
         });
 
-        if (!campgound) throw new Error('Campground Not found');
+        if (!campgound) {
+            throw new Error('Campground Not found');
+        }
 
         res.status(200).json({
             success: true,
@@ -88,9 +90,22 @@ exports.updateCampground = async (req, res, next) => {
 // @desc:    Delete a campground with an id
 // @route:   DELETE /api/v1/campgrounds/:id
 // @access:  Private
-exports.deleteCampground = (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        msg: `Delete a campground with an id: ${req.params.id}`
-    });
+exports.deleteCampground = async (req, res, next) => {
+    try {
+        const campground = await CampgroundDB.findByIdAndDelete(req.params.id);
+
+        if (!campground) {
+            throw new Error('Campground Not found');
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            error: err.message
+        })
+    }
 };
