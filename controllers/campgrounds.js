@@ -64,11 +64,25 @@ exports.createCampground = async (req, res, next) => {
 // @desc:    Update a campground with an id
 // @route:   PUT /api/v1/campgrounds
 // @access:  Private
-exports.updateCampground = (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        msg: `Update a campground with an id: ${req.params.id}`
-    });
+exports.updateCampground = async (req, res, next) => {
+    try {
+        const campgound = await CampgroundDB.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        if (!campgound) throw new Error('Campground Not found');
+
+        res.status(200).json({
+            success: true,
+            data: campgound
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            error: err.message
+        })
+    }
 };
 
 // @desc:    Delete a campground with an id
