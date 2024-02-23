@@ -22,11 +22,24 @@ exports.getCampgrounds = async (req, res, next) => {
 // @desc:    Get a single campgrounds with an id
 // @route:   GET /api/v1/campgrounds/:id
 // @access:  Public
-exports.getCampground = (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        msg: `Show a campground with an id: ${req.params.id}`
-    });
+exports.getCampground = async (req, res, next) => {
+    try {
+        const campgound = CampgroundDB.findById(req.params.id)
+
+        if (!campgounds) {
+            throw new Error('Campground Not found');
+        }
+
+        res.status(200).json({
+            success: true,
+            data : campgound
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            error: err.message
+        })
+    }
 };
 
 // @desc:    Create a new campground
