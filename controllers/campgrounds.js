@@ -24,9 +24,9 @@ exports.getCampgrounds = async (req, res, next) => {
 // @access:  Public
 exports.getCampground = async (req, res, next) => {
     try {
-        const campgound = CampgroundDB.findById(req.params.id)
+        const campgound = await CampgroundDB.findById(req.params.id)
 
-        if (!campgounds) {
+        if (!campgound) {
             throw new Error('Campground Not found');
         }
 
