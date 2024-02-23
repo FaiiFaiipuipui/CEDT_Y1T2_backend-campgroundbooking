@@ -13,6 +13,9 @@ connectDB();
 
 const app = express();
 
+// Body Parser
+app.use(express.json());
+
 // Mount routers
 app.use('/api/v1/campgrounds', campgrounds);
 
