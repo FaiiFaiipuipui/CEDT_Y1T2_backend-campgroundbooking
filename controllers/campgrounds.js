@@ -1,11 +1,22 @@
+const CampgroundDB = require('../models/campgrounds')
+
 // @desc:    Get all campgrounds
 // @route:   GET /api/v1/campgrounds
 // @access:  Public
-exports.getCampgrounds = (req, res, next) => {
-    res.status(200).json({
-        success: true,
-        msg: 'Show all campgrounds'
-    });
+exports.getCampgrounds = async (req, res, next) => {
+    try {
+        const campgrounds = await CampgroundDB.find();  
+
+        res.status(200).json({
+            success: true,
+            data: campgrounds
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false,
+            error: err.message
+        });
+    }
 };
 
 // @desc:    Get a single campgrounds with an id
