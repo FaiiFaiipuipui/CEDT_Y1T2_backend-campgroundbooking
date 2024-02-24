@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
   mongoose.set("strictQuery", true);
