@@ -86,15 +86,15 @@ exports.getCampgrounds = async (req, res, next) => {
 // @access:  Public
 exports.getCampground = async (req, res, next) => {
   try {
-    const campgound = await Campground.findById(req.params.id);
+    const campground = await Campground.findById(req.params.id);
 
-    if (!campgound) {
-      throw new Error("Campground Not found");
+    if (!campground) {
+      return res.status(400).json({ success: false });
     }
 
     res.status(200).json({
       success: true,
-      data: campgound,
+      data: campground,
     });
   } catch (err) {
     res.status(400).json({
@@ -128,7 +128,7 @@ exports.createCampground = async (req, res, next) => {
 // @access:  Private
 exports.updateCampground = async (req, res, next) => {
   try {
-    const campgound = await Campground.findByIdAndUpdate(
+    const campground = await Campground.findByIdAndUpdate(
       req.params.id,
       req.body,
       {
@@ -137,13 +137,13 @@ exports.updateCampground = async (req, res, next) => {
       }
     );
 
-    if (!campgound) {
-      throw new Error("Campground Not found");
+    if (!campground) {
+      return res.status(400).json({ success: false });
     }
 
     res.status(200).json({
       success: true,
-      data: campgound,
+      data: campground,
     });
   } catch (err) {
     res.status(400).json({
@@ -158,12 +158,13 @@ exports.updateCampground = async (req, res, next) => {
 // @access:  Private
 exports.deleteCampground = async (req, res, next) => {
   try {
-    const campground = await Campground.findByIdAndDelete(req.params.id);
+    const campground = await Campground.findById(req.params.id);
 
     if (!campground) {
-      throw new Error("Campground Not found");
+      return res.status(400).json({ success: false });
     }
 
+    await campground.deleteOne();
     res.status(200).json({
       success: true,
       data: {},
