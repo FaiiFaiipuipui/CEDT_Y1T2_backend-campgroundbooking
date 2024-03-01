@@ -12,6 +12,7 @@ connectDB();
 // Route files
 const campgrounds = require("./routes/campgrounds");
 const auth = require("./routes/auth");
+const appointment = require('./routes/appointments');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
 app.use("/api/v1/auth", auth);
+app.use('/api/v1/appointments', appointment);
 
 const PORT = process.env.PORT || 5000;
 

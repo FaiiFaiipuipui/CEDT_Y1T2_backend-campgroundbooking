@@ -7,9 +7,13 @@ const {
   deleteCampground,
 } = require("../controllers/campgrounds");
 
+const appointmentRouter = require('./appointments');
+
 const router = express.Router();
 
 const { protect, authorize } = require("../middleware/auth");
+
+router.use('/:campgroundId/appointments/', appointmentRouter);
 
 router
   .route("/")
