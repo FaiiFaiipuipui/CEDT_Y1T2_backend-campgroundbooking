@@ -137,3 +137,40 @@ exports.updateAppointment = async (req, res, next) => {
     })
   }
 }
+
+//@desc Delete Appointment
+//@route DELETE /api/v1/appointments/:id
+//@access Private
+exports.deleteAppointment = async (req, res, next) => {
+  try {
+    const appointment = await Appointment.findById(req.params.id);
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: `No appointment with the id of ${req.params.id}`
+      });
+    }
+
+    // Make sure user is the appointment owner
+    /*if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(401).json({
+        success: false,
+        message: `User ${req.user.id} is not authorized to delete this appointment`
+      });
+    }*/
+
+    await appointment.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      data: {}
+    });
+} catch(err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Cannot delete Appointment"
+    });
+  }
+};
