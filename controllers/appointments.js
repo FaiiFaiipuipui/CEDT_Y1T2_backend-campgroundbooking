@@ -97,3 +97,43 @@ exports.addAppointment = async (req, res, next) => {
       .json({ success: false, message: "Cannot create Appointment" });
   }
 };
+
+//@desc Update appointment
+//@route PUT /api/v1/appointments/:id
+//@access Private
+exports.updateAppointment = async (req, res, next) => {
+  try{
+    let appointment = await Appointment.findById(req.params.id);
+
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: `No appointment with the id of ${req.params.id}`
+      });
+    }
+
+    // Make sure user is the appointment owner
+    /*if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(401).json({
+        success: false,
+        message: `User ${req.user.id} is not authorized to update this appointment`
+      });
+    }*/
+
+    appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    res.status(200).json({
+      success: true,
+      data: appointment
+    });
+  } catch(err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Cannot Update Appointment"
+    })
+  }
+}
