@@ -1,20 +1,20 @@
-@startuml VacQ System Use Case Diagram
+@startuml Campground Booking System Use Case Diagram
 left to right direction
 actor "User" as user
-rectangle "VacQ System" as VacQSystem {    
+rectangle "Campground Booking System" as CampgroundSystem {
     usecase "Register" as register
-    usecase "View\nHospitals" as viewHospitals
+    usecase "View\nCampgrounds" as viewCampgrounds
     usecase "Manage\nAppointment" as manageAppt
-    usecase "Manage\nHospital" as manageHospital
+    usecase "Manage\nCampground" as manageCampground
 }
 
 user -- register
-user -- viewHospitals
+user -- viewCampgrounds
 user -- manageAppt
 
 actor "Admin" as admin
 register -- admin
-manageHospital -- admin
+manageCampground -- admin
 manageAppt -- admin
 
 @enduml
