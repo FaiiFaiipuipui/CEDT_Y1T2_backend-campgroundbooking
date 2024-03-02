@@ -88,6 +88,9 @@ exports.addAppointment = async (req, res, next) => {
       });
     }
 
+    // Add user Id to req.body
+    req.body.user = req.user.id;
+
     const appointment = await Appointment.create(req.body);
     res.status(200).json({ success: true, data: appointment });
   } catch (error) {
@@ -113,12 +116,12 @@ exports.updateAppointment = async (req, res, next) => {
     }
 
     // Make sure user is the appointment owner
-    /*if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(401).json({
         success: false,
         message: `User ${req.user.id} is not authorized to update this appointment`
       });
-    }*/
+    }
 
     appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -153,12 +156,12 @@ exports.deleteAppointment = async (req, res, next) => {
     }
 
     // Make sure user is the appointment owner
-    /*if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (appointment.user.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(401).json({
         success: false,
         message: `User ${req.user.id} is not authorized to delete this appointment`
       });
-    }*/
+    }
 
     await appointment.deleteOne();
 
