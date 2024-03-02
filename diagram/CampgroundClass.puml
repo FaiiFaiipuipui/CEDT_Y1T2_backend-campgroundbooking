@@ -1,20 +1,20 @@
 @startuml
 left to right direction
-package "Campground"{
-    class "<<Application>>\nVacQService" as VacQService{}
+package "Campground Booking System (CBS)"{
+    class "<<Application>>\nCBSService" as CBSService{}
 
-    class "<<Resource>>\nHospitals" as ResourceHospitals{
-        <<GET>> +getHospitals():Hospital
-        <<POST>> +createHospital():Hospital
+    class "<<Resource>>\nCampgrounds" as ResourceCampgrounds{
+        <<GET>> +getCampgrounds():Campground
+        <<POST>> +createCampground():Campground
     }
 
-    class "<<Resource>>\nHospital" as ResourceHospital {
-        <<GET>> +getHospital(): Hospital
-        <<PUT>> +updateHospital(): Hospital
-        <<DELETE>> +deleteHospital(): void
+    class "<<Resource>>\nCampground" as ResourceCampground {
+        <<GET>> +getCampground(): Campground
+        <<PUT>> +updateCampground(): Campground
+        <<DELETE>> +deleteCampground(): void
     }
 
-    class "<<Representation>>\nHospital" as RepresentationHospital {
+    class "<<Representation>>\nCampground" as RepresentationCampground {
         -name
         -cooradinate
         -province
@@ -25,8 +25,8 @@ package "Campground"{
 
 }
 
-VacQService ..> ResourceHospitals:"/hospitals\n<<Path>>"
-ResourceHospitals ..> ResourceHospital: "/{hospitalId}\n<<Path>>"
-ResourceHospital ..> RepresentationHospital: "<<use>>"
+CBSService ..> ResourceCampgrounds:"/campgrounds\n<<Path>>"
+ResourceCampgrounds ..> ResourceCampground: "/{campgroundId}\n<<Path>>"
+ResourceCampground ..> RepresentationCampground: "<<use>>"
 
 @enduml
