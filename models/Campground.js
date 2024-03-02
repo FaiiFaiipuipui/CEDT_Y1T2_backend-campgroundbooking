@@ -10,14 +10,9 @@ const CampgroundSchema = new mongoose.Schema(
       maxlength: [50, "Name can not be more than 50 characters"],
     },
 
-    address: {
+    cooradinate: {
       type: String,
-      required: [true, "Please add an address"],
-    },
-
-    district: {
-      type: String,
-      required: [true, "Please add a district"],
+      required: [true, "Please add a cooradinate"],
     },
 
     province: {
@@ -25,7 +20,12 @@ const CampgroundSchema = new mongoose.Schema(
       required: [true, "Please add a province"],
     },
 
-    tel: {
+    postalcode: {
+      type: String,
+      required: [true, "Please add a postal code"],
+    },
+
+    telephone: {
       type: String,
       required: [true, "Please add a telephone number"],
     },

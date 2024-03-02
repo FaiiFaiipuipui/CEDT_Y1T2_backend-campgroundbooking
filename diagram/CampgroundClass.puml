@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-package "VacQ"{
+package "Campground"{
     class "<<Application>>\nVacQService" as VacQService{}
 
     class "<<Resource>>\nHospitals" as ResourceHospitals{
@@ -16,8 +16,7 @@ package "VacQ"{
 
     class "<<Representation>>\nHospital" as RepresentationHospital {
         -name
-        -address
-        -district
+        -cooradinate
         -province
         -postalcode
         -telephone
