@@ -74,7 +74,7 @@ exports.getWeather = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `The weather as of ${day} is considered ${aqiQualitativeName.at(
+      message: `The weather as of ${day} at ${campgroundObj.name} considered ${aqiQualitativeName.at(
         pollutionInfo.AQI
       )} with an AQI of ${pollutionInfo.AQI} and pm2.5 level of ${
         pollutionInfo.PM2_5
