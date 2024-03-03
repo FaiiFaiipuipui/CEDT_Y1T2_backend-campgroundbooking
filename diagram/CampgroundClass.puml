@@ -23,10 +23,45 @@ package "Campground Booking System (CBS)"{
         -region
     }
 
+    class "<<Resource>>\nAuth" as ResourceAuth{
+        
+    }
+
+    class "<<Resource>>\nRegister" as RegisterService {
+        <<POST>> +register(): User
+    }
+
+    class "<<Resource>>\nLogin" as LoginService {
+        <<POST>> +login(): User
+    }
+
+    class "<<Resource>>\nGet Me" as GetMeService {
+        <<GET>> +getMe(): User
+    }
+    class "<<Resource>>\nLogout" as LogoutService {
+        <<GET>> +Logout(): User
+    }
+
+    class "<<Representation>>\nUser" as RepresentationUser {
+        -name
+        -email
+        -password
+        -role
+    }
 }
 
 CBSService ..> ResourceCampgrounds:"/campgrounds\n<<Path>>"
 ResourceCampgrounds ..> ResourceCampground: "/{campgroundId}\n<<Path>>"
 ResourceCampground ..> RepresentationCampground: "<<use>>"
+
+CBSService ..> ResourceAuth:"/auth\n<<Path>>"
+ResourceAuth ..> RegisterService: "/register\n<<Path>>"
+ResourceAuth ..> LoginService: "/login\n<<Path>>"
+ResourceAuth ..> GetMeService: "/me\n<<Path>>"
+ResourceAuth ..> LogoutService: "/logout\n<<Path>>"
+RegisterService ..> RepresentationUser: "<<use>>"
+LoginService ..> RepresentationUser: "<<use>>"
+GetMeService ..> RepresentationUser: "<<use>>"
+LogoutService ..> RepresentationUser: "<<use>>"
 
 @enduml
