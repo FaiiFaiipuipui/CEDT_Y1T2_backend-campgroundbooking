@@ -48,10 +48,28 @@ package "Campground Booking System (CBS)"{
         -password
         -role
     }
+
+    class "<<Resource>>\nAppointments" as ResourceAppointments{
+        <<GET>> +getAppointments(): Appointments
+    }
+
+    class "<<Resource>>\nAppointment" as ResourceAppointment{
+        <<GET>> +getAppointment(): Appointment
+        <<PUT>> +updateAppointment(): Appointment
+        <<DELETE>> +deleteAppointment(): void
+    }
+
+    class "<<Representation>>\nAppointment" as RepresentationAppointment {
+        -apptDate
+        -user
+        -campground
+        -createdAt
+    }
 }
 
 CBSService ..> ResourceCampgrounds:"/campgrounds\n<<Path>>"
 ResourceCampgrounds ..> ResourceCampground: "/{campgroundId}\n<<Path>>"
+ResourceCampgrounds ..> RepresentationCampground: "/<<use>>"
 ResourceCampground ..> RepresentationCampground: "<<use>>"
 
 CBSService ..> ResourceAuth:"/auth\n<<Path>>"
@@ -63,5 +81,10 @@ RegisterService ..> RepresentationUser: "<<use>>"
 LoginService ..> RepresentationUser: "<<use>>"
 GetMeService ..> RepresentationUser: "<<use>>"
 LogoutService ..> RepresentationUser: "<<use>>"
+
+CBSService ..> ResourceAppointment: "/appointment\n<<Path>>"
+ResourceAppointment ..> ResourceAppointments: "/{appointmentId}\n<<Path>>"
+ResourceAppointment ..> RepresentationAppointment: "<<use>>"
+ResourceAppointments ..> RepresentationAppointment: "<<use>>"
 
 @enduml
