@@ -12,12 +12,14 @@ connectDB();
 // Route files
 const campgrounds = require("./routes/campgrounds");
 const auth = require("./routes/auth");
-const appointment = require('./routes/appointments');
+const appointment = require("./routes/appointments");
 
 const app = express();
 
-const mongoSanitize = require('express-mongo-sanitize');
-const helmet = require('helmet');
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const { xss } = require("express-xss-sanitizer");
+const rateLimit = require("express-rate-limit");
 
 // Body parser
 app.use(express.json());
@@ -28,10 +30,16 @@ app.use(cookieParser());
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
 app.use("/api/v1/auth", auth);
-app.use('/api/v1/appointments', appointment);
+app.use("/api/v1/appointments", appointment);
 
 app.use(mongoSanitize());
 app.use(helmet());
+app.use(xss());
+const limiter = rateLimit({
+  windowMS: 10 * 60 * 1000,
+  max: 1000,
+});
+app.use(limiter);
 
 const PORT = process.env.PORT || 5000;
 
