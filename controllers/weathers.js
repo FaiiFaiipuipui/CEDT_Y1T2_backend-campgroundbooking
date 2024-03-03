@@ -78,7 +78,7 @@ exports.getWeather = async (req, res, next) => {
         pollutionInfo.AQI
       )} with an AQI of ${pollutionInfo.AQI} and pm2.5 level of ${
         pollutionInfo.PM2_5
-      }, ${aqiAdvices.at(pollutionInfo.AQI)}`
+      }. ${aqiAdvices.at(pollutionInfo.AQI)}`
     });
   } catch (err) {
     console.log(err);
