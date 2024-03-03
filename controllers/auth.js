@@ -17,7 +17,7 @@ exports.register = async (req, res, next) => {
 
     // Create token
     // const token = user.getSignedJwtToken();
-    // res.status(200).json({ success: true, token });
+    // res.status(200).json({ succcess: true, token });
     sendTokenResponse(user, 200, res);
   } catch (err) {
     res.status(400).json({ success: false });
@@ -54,12 +54,11 @@ exports.login = async (req, res, next) => {
         .status(401)
         .json({ success: false, msg: "Invalid credentials" });
     }
-
     // Create token
     // const token = user.getSignedJwtToken();
     // res.status(200).json({ success: true, token });
     sendTokenResponse(user, 200, res);
-  } catch (error) {
+  } catch (err) {
     return res.status(401).json({
       success: false,
       msg: "Cannot convert email or password to string",
@@ -85,7 +84,7 @@ const sendTokenResponse = (user, statusCode, res) => {
   res
     .status(statusCode)
     .cookie("token", token, options)
-    .json({ success: true, token });
+    .json({ succcess: true, token });
 };
 
 // @desc    Get current Logged in user
@@ -104,6 +103,5 @@ exports.logout = async (req, res, next) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-
-  res.status(200).json({ succcess: true, data: {} });
+  res.status(200).json({ success: true, data: {} });
 };

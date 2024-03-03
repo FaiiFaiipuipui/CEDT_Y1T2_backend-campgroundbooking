@@ -10,7 +10,7 @@ const CampgroundSchema = new mongoose.Schema(
       maxlength: [50, "Name can not be more than 50 characters"],
     },
 
-    cooradinate: {
+    coordinate: {
       type: String,
       required: [true, "Please add a cooradinate"],
     },

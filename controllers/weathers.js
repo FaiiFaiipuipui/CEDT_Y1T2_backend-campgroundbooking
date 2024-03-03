@@ -10,7 +10,7 @@ const days = [
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday"
+  "Saturday",
 ];
 
 const aqiQualitativeName = [
@@ -19,7 +19,7 @@ const aqiQualitativeName = [
   "Fair",
   "Moderate",
   "poor",
-  "Very Poor"
+  "Very Poor",
 ];
 
 const aqiAdvices = [
@@ -28,11 +28,11 @@ const aqiAdvices = [
   "Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.",
   "Members of sensitive groups may experience health effects. The general public is less likely to be affected.",
   "Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects.",
-  "Health alert: The risk of health effects is increased for everyone."
+  "Health alert: The risk of health effects is increased for everyone.",
 ];
 
-// @desc Get weathers of campground with an ID of campgroundId
-// @route: GET /api/v1/campgrounds/:campgroundId/weather/
+// @desc:   Get weathers of campground with an ID of campgroundId
+// @route:  GET /api/v1/campgrounds/:campgroundId/weather/
 // @access: Public
 exports.getWeather = async (req, res, next) => {
   try {
@@ -74,11 +74,13 @@ exports.getWeather = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `The weather as of ${day} at ${campgroundObj.name} considered ${aqiQualitativeName.at(
+      message: `The weather as of ${day} at ${
+        campgroundObj.name
+      } considered ${aqiQualitativeName.at(pollutionInfo.AQI)} with an AQI of ${
         pollutionInfo.AQI
-      )} with an AQI of ${pollutionInfo.AQI} and pm2.5 level of ${
-        pollutionInfo.PM2_5
-      }. ${aqiAdvices.at(pollutionInfo.AQI)}`
+      } and pm2.5 level of ${pollutionInfo.PM2_5}. ${aqiAdvices.at(
+        pollutionInfo.AQI
+      )}`,
     });
   } catch (err) {
     console.log(err);
