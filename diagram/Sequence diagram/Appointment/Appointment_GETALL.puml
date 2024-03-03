@@ -1,0 +1,31 @@
+@startuml Manage Appointment (GET ALL)
+
+header Campground Sequence Diagram
+footer Page %page% of %lastpage%
+title "Manage Appointment (GET ALL)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:appointments" as routerAppointments
+participant "<<controllers>>\n:appointments" as controllersAppointments
+participant "<<model>>\n:Appointment" as modelAppointment
+database "<<MongoDB>>\n:appointments" as CampgroundsDatabase
+
+client->server ++:req.get('/appointments')
+server->routerAppointments ++:app.use('/appointments',appointments)
+routerAppointments -> controllersAppointments ++:getAppointments()
+alt req.user.role !== "admin"
+    controllersAppointments->modelAppointment ++:find(req.user.id)
+else 
+    alt req.params.campgroundId
+        controllersAppointments->modelAppointment ++:find(req.params.campgroundId)
+    else 
+        controllersAppointments->modelAppointment ++:find()
+    end
+end
+modelAppointment ->CampgroundsDatabase ++:AppointmentSchema
+CampgroundsDatabase --> modelAppointment --:appointment
+controllersAppointments <-- modelAppointment --:appointment
+controllersAppointments->client --:response
+
+@enduml
