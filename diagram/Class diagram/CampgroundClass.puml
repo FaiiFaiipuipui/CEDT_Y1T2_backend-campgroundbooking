@@ -74,25 +74,25 @@ package "Campground Booking System (CBS)"{
 
 CBSService ..> ResourceCampgrounds:"/campgrounds\n<<Path>>"
 ResourceCampgrounds ..> ResourceCampground: "/{campgroundId}\n<<Path>>"
-ResourceCampgrounds ..> RepresentationCampground: "/<<use>>"
-ResourceCampground ..> AddResourceAppointments: "/<<use>>"
-ResourceCampground ..> RepresentationCampground: "<<use>>"
+ResourceCampgrounds ..> RepresentationCampground: "<<Use>>"
+ResourceCampground ..> AddResourceAppointments: "<<Use>>"
+ResourceCampground ..> RepresentationCampground: "<<Use>>"
 
 CBSService ..> ResourceAppointments: "/appointment\n<<Path>>"
 ResourceAppointments ..> ResourceAppointment: "/{appointmentId}\n<<Path>>"
-ResourceAppointment ..> RepresentationAppointment: "<<use>>"
-ResourceAppointments ..> RepresentationAppointment: "<<use>>"
-AddResourceAppointments ..> RepresentationAppointment
+ResourceAppointment ..> RepresentationAppointment: "<<Use>>"
+ResourceAppointments ..> RepresentationAppointment: "<<Use>>"
+AddResourceAppointments ..> RepresentationAppointment: "<<Use>>"
 
 CBSService ..> ResourceAuth:"/auth\n<<Path>>"
 ResourceAuth ..> RegisterService: "/register\n<<Path>>"
 ResourceAuth ..> LoginService: "/login\n<<Path>>"
 ResourceAuth ..> GetMeService: "/me\n<<Path>>"
 ResourceAuth ..> LogoutService: "/logout\n<<Path>>"
-RegisterService ..> RepresentationUser: "<<use>>"
-LoginService ..> RepresentationUser: "<<use>>"
-GetMeService ..> RepresentationUser: "<<use>>"
-LogoutService ..> RepresentationUser: "<<use>>"
+RegisterService ..> RepresentationUser: "<<Use>>"
+LoginService ..> RepresentationUser: "<<Use>>"
+GetMeService ..> RepresentationUser: "<<Use>>"
+LogoutService ..> RepresentationUser: "<<Use>>"
 
 
 @enduml
