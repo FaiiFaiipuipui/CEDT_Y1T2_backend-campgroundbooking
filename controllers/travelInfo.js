@@ -20,8 +20,6 @@ exports.getPlace = async (req, res, next) => {
     const campgroundObj = campground.toObject();
     let rawCoordinate = campgroundObj.coordinate;
 
-
-
     rawCoordinate = convert(rawCoordinate);
     const latitude = rawCoordinate.decimalLatitude;
     const longtitude = rawCoordinate.decimalLongitude;
