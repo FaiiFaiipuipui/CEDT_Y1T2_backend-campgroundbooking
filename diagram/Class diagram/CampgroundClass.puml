@@ -55,7 +55,7 @@ package "Campground Booking System (CBS)"{
     }
 
     class "<<Resource>>\nAppointments" as AddResourceAppointments{
-        <<POST>> +addAppointments(): Appointment
+        <<POST>> +addAppointment(): Appointment
     }
 
     class "<<Resource>>\nAppointment" as ResourceAppointment{
