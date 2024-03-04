@@ -51,7 +51,8 @@ package "Campground Booking System (CBS)"{
     }
 
     class "<<Resource>>\nAppointments" as ResourceAppointments{
-        <<GET>> +getAppointments(): Appointments
+        <<GET>> +getAppointments(): Appointment
+        <<POST>> +createAppointment(): Appointment
     }
 
     class "<<Resource>>\nAppointment" as ResourceAppointment{
@@ -83,8 +84,8 @@ LoginService ..> RepresentationUser: "<<use>>"
 GetMeService ..> RepresentationUser: "<<use>>"
 LogoutService ..> RepresentationUser: "<<use>>"
 
-CBSService ..> ResourceAppointment: "/appointment\n<<Path>>"
-ResourceAppointment ..> ResourceAppointments: "/{appointmentId}\n<<Path>>"
+CBSService ..> ResourceAppointments: "/appointment\n<<Path>>"
+ResourceAppointments ..> ResourceAppointment: "/{appointmentId}\n<<Path>>"
 ResourceAppointment ..> RepresentationAppointment: "<<use>>"
 ResourceAppointments ..> RepresentationAppointment: "<<use>>"
 
