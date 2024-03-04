@@ -44,7 +44,8 @@ exports.getPlace = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `${campgroundObj.name}, ${campgroundObj.province}, ${latLong}`
+      message: `places around ${campgroundObj.name} in ${campgroundObj.province} provinces`,
+      data: rawplacesInfo.data
     });
   } catch (err) {
     console.log(err);
