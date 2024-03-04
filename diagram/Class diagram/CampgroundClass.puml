@@ -39,7 +39,7 @@ package "Campground Booking System (CBS)"{
         <<GET>> +getMe(): User
     }
     class "<<Resource>>\nLogout" as LogoutService {
-        <<GET>> +Logout(): User
+        <<GET>> +logout(): User
     }
 
     class "<<Representation>>\nUser" as RepresentationUser {
