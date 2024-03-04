@@ -21,6 +21,7 @@ const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require('hpp');
+const cors = require('cors');
 
 // Body parser
 app.use(express.json());
@@ -42,6 +43,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
