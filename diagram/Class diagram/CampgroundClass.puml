@@ -1,5 +1,5 @@
-@startuml
-left to right direction
+@startuml Campground Booking System (CBS)
+
 package "Campground Booking System (CBS)"{
     class "<<Application>>\nCBSService" as CBSService{}
 
