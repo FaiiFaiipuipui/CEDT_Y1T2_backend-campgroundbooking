@@ -145,3 +145,10 @@ exports.getPollution = async (req, res, next) => {
     });
   }
 };
+
+exports.getWrongRouteMessage = (req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: 'oops! you did not specify whether to get /general or /pollution'
+  })
+};

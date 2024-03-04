@@ -1,5 +1,5 @@
 const express = require('express');
-const { getWeather, getPollution } = require('../controllers/weathers')
+const { getWeather, getPollution, getWrongRouteMessage } = require('../controllers/weathers')
 
 const router = express.Router({ mergeParams: true});
 
@@ -13,11 +13,6 @@ router
 
 router
   .route('/')
-  .get((req, res, next) => {
-    res.status(404).json({
-      success: false,
-      message: 'oops! you did not specify whether to get /general or /pollution'
-    })
-  });
+  .get(getWrongRouteMessage);
 
 module.exports = router;
