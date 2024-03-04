@@ -30,7 +30,7 @@ exports.getPlace = async (req, res, next) => {
     const searchKeyword = '';
     const searchProvince = campgroundObj.province;
 
-    const rawplacesInfo = await axios.get(`https://tatapi.tourismthailand.org/tatapi/v5/places/search?keyword=${searchKeyword}&location=${latLong}&numberofresult=${resultsWanted}&searchradius=${searchRadius}&provinceName=${searchProvince}`,{
+    const rawPlacesInfo = await axios.get(`https://tatapi.tourismthailand.org/tatapi/v5/places/search?keyword=${searchKeyword}&location=${latLong}&numberofresult=${resultsWanted}&searchradius=${searchRadius}&provinceName=${searchProvince}`,{
       headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${process.env.TAT_API_KEY}`,
@@ -38,12 +38,22 @@ exports.getPlace = async (req, res, next) => {
       }
     });
 
-    console.log(rawplacesInfo.data);
+    for (places of rawPlacesInfo.data.result) {
+      delete places.sha;
+      delete places.place_id;
+      delete places.thumbnail_url;
+      delete places.tags;
+      delete places.update_date;
+      delete places.distance;
+      console.log(places);
+    }
+
+    //console.log(rawPlacesInfo.data);
 
     res.status(200).json({
       success: true,
       message: `places around ${campgroundObj.name} in ${campgroundObj.province} provinces`,
-      data: rawplacesInfo.data
+      data: rawPlacesInfo.data
     });
   } catch (err) {
     console.log(err);
