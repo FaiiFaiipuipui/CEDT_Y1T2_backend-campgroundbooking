@@ -4,7 +4,7 @@ const axios = require("axios");
 const { application } = require("express");
 
 // @desc:   Get Places around campground with an ID of campgroundId
-// @route:  GET /api/v1/campgrounds/:campgroundId/around/restaurant
+// @route:  GET /api/v1/campgrounds/:campgroundId/around/
 // @access: Public
 exports.getPlace = async (req, res, next) => {
   try {
