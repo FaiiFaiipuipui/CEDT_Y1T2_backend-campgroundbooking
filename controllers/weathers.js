@@ -3,6 +3,8 @@ const { convert } = require("geo-coordinates-parser");
 const axios = require("axios");
 const { unix_to_date } = require("time-stamps");
 
+const UTCOffset = 7 * 60 * 60;
+
 const days = [
   "Sunday",
   "Monday",
@@ -32,7 +34,7 @@ const aqiAdvices = [
 ];
 
 // @desc:   Get weathers of campground with an ID of campgroundId
-// @route:  GET /api/v1/campgrounds/:campgroundId/weather/
+// @route:  GET /api/v1/campgrounds/:campgroundId/weather/general
 // @access: Public
 exports.getWeather = async (req, res, next) => {
   try {
@@ -49,9 +51,64 @@ exports.getWeather = async (req, res, next) => {
     let rawCoordinate = campgroundObj.coordinate;
 
     rawCoordinate = convert(rawCoordinate);
-    console.log(rawCoordinate);
-    let latitude = rawCoordinate.decimalLatitude;
-    let longtitude = rawCoordinate.decimalLongitude;
+    const latitude = rawCoordinate.decimalLatitude;
+    const longtitude = rawCoordinate.decimalLongitude;
+
+    const measurementUnits = 'metric';
+
+    const rawWeatherInfo = await axios.get(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longtitude}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=${measurementUnits}`
+    );
+
+    console.log(rawWeatherInfo.data);
+
+    const weatherInfo = new Object();
+
+    weatherInfo.temp = rawWeatherInfo.data.main.temp;
+    weatherInfo.tempFeel = rawWeatherInfo.data.main.feels_like;
+    weatherInfo.description = rawWeatherInfo.data.weather.at(0).description;
+    console.log(weatherInfo.description);
+
+    const measuredTimeStamp = unix_to_date(
+      rawWeatherInfo.data.dt + UTCOffset
+    );
+
+    const day = days.at(measuredTimeStamp.getDay());
+
+    res.status(200).json({
+      success: true,
+      message: `we're having a ${weatherInfo.description} right now at ${campgroundObj.name}, the temperature is ${weatherInfo.temp} but it will feel like ${weatherInfo.tempFeel}`,
+      data: rawWeatherInfo.data
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch weather information",
+    });
+  }
+};
+
+// @desc:   Get pollution infos of campground with an ID of campgroundId
+// @route:  GET /api/v1/campgrounds/:campgroundId/weather/pollution/
+// @access: Public
+exports.getPollution = async (req, res, next) => {
+  try {
+    const campground = await Campground.findById(req.params.campgroundId);
+
+    if (!campground) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find campground with the provided ID",
+      });
+    }
+
+    const campgroundObj = campground.toObject();
+    let rawCoordinate = campgroundObj.coordinate;
+
+    rawCoordinate = convert(rawCoordinate);
+    const latitude = rawCoordinate.decimalLatitude;
+    const longtitude = rawCoordinate.decimalLongitude;
 
     const rawPollutionInfo = await axios.get(
       `http://api.openweathermap.org/data/2.5/air_pollution?lat=${latitude}&lon=${longtitude}&appid=${process.env.OPEN_WEATHER_API_KEY}`
@@ -59,17 +116,15 @@ exports.getWeather = async (req, res, next) => {
 
     console.log(rawPollutionInfo.data);
 
-    let pollutionInfo = new Object();
+    const pollutionInfo = new Object();
 
     pollutionInfo.AQI = rawPollutionInfo.data.list.at(0).main.aqi;
     pollutionInfo.PM2_5 = rawPollutionInfo.data.list.at(0).components.pm2_5;
 
-    let UTCOffset = 7 * 60 * 60;
-
-    let measuredTimeStamp = unix_to_date(
+    const measuredTimeStamp = unix_to_date(
       rawPollutionInfo.data.list.at(0).dt + UTCOffset
     );
-    let day = days.at(measuredTimeStamp.getDay());
+    const day = days.at(measuredTimeStamp.getDay());
 
     res.status(200).json({
       success: true,
@@ -80,12 +135,13 @@ exports.getWeather = async (req, res, next) => {
       } and pm2.5 level of ${pollutionInfo.PM2_5}. ${aqiAdvices.at(
         pollutionInfo.AQI
       )}`,
+      data: rawPollutionInfo.data
     });
   } catch (err) {
     console.log(err);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch weather Information",
+      message: "Failed to fetch pollution information",
     });
   }
 };
