@@ -44,6 +44,7 @@ package "Campground Booking System (CBS)"{
 
     class "<<Representation>>\nUser" as RepresentationUser {
         -name
+        -telephone
         -email
         -password
         -role
