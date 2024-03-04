@@ -46,8 +46,7 @@ exports.getWeather = async (req, res, next) => {
     }
 
     const campgroundObj = campground.toObject();
-    let rawCoordinate =
-      campgroundObj.coordinate; /* coordinate is spelled right, spellchecker is probably drunk or sth */
+    let rawCoordinate = campgroundObj.coordinate;
 
     rawCoordinate = convert(rawCoordinate);
     console.log(rawCoordinate);
