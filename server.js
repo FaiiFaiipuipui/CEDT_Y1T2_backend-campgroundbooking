@@ -29,11 +29,6 @@ app.use(express.json());
 // Cookie parser
 app.use(cookieParser());
 
-// Mount routers
-app.use("/api/v1/campgrounds", campgrounds);
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/appointments", appointment);
-
 app.use(mongoSanitize());
 app.use(helmet());
 app.use(xss());
@@ -43,12 +38,18 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-
 const corsOptions = {
   origin: "*",
   credentials: false,
 };
 app.use(cors(corsOptions));
+
+// Mount routers
+app.use("/api/v1/campgrounds", campgrounds);
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/appointments", appointment);
+
+
 
 const PORT = process.env.PORT || 5000;
 
