@@ -5,13 +5,13 @@ const Campground = require("../models/Campground");
 // @access:  Public
 exports.getCampgrounds = async (req, res, next) => {
   let query;
+  console.log(req);
 
   const reqQuery = { ...req.query };
   const removeFields = ["select", "sort", "page", "limit"];
 
   // Loop over remove fields and delete them from reqQuery
   removeFields.forEach((params) => delete reqQuery[params]);
-  console.log(reqQuery);
 
   let queryStr = JSON.stringify(req.query);
 
@@ -73,6 +73,7 @@ exports.getCampgrounds = async (req, res, next) => {
       pagination,
       data: campgrounds,
     });
+    console.log('success', campgrounds.length);
   } catch (err) {
     res.status(400).json({
       success: false,
