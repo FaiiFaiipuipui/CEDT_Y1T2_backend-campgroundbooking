@@ -52,10 +52,25 @@ const server = app.listen(
   console.log(
     "Server is running in",
     process.env.NODE_ENV,
-    "mode on port",
-    PORT
+    "on" + process.env.HOST + ":" + PORT
   )
 );
+
+const swaggerOptions={
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'CBS API',
+      version: '1.0.0',
+      description: 'Campgound Booking System of Team Kae Leaw'
+    },
+    server: [
+      {
+        url: process.env.HOST + ':' + PORT + '/api/v1'
+      }
+    ],
+  }
+}
 
 // Handle unhandles promis rejections
 process.on("unhandledRejection", (err, promise) => {
