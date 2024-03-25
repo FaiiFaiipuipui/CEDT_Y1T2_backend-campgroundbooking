@@ -45,7 +45,7 @@ app.use(limiter);
 app.use(hpp());
 
 const corsOptions = {
-  origin: "https://localhost:3000",
+  origin: "*",
   credentials: true,
 };
 app.use(cors(corsOptions));
