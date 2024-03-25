@@ -20,8 +20,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
-const hpp = require('hpp');
-const cors = require('cors');
+const hpp = require("hpp");
+const cors = require("cors");
 
 // Body parser
 app.use(express.json());
@@ -43,7 +43,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-app.use(cors());
+
+const corsOptions = {
+  origin: "https://localhost:3000",
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 5000;
 
@@ -56,21 +61,21 @@ const server = app.listen(
   )
 );
 
-const swaggerOptions={
+const swaggerOptions = {
   swaggerDefinition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'CBS API',
-      version: '1.0.0',
-      description: 'Campgound Booking System of Team Kae Leaw'
+      title: "CBS API",
+      version: "1.0.0",
+      description: "Campgound Booking System of Team Kae Leaw",
     },
     server: [
       {
-        url: process.env.HOST + ':' + PORT + '/api/v1'
-      }
+        url: process.env.HOST + ":" + PORT + "/api/v1",
+      },
     ],
-  }
-}
+  },
+};
 
 // Handle unhandles promis rejections
 process.on("unhandledRejection", (err, promise) => {
