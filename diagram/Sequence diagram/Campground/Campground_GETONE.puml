@@ -12,8 +12,8 @@ participant "<<controllers>>\n:campgrounds" as controllersCampgrounds
 participant "<<model>>\n:Campground" as modelCampground
 database "<<MongoDB>>\n:campgrounds" as CampgroundsDatabase
 
-user->server ++:req.get('/campgrounds')
-admin->server ++:req.get('/campgrounds')
+user->server ++:req.get('/campgrounds/;id')
+admin->server ++:req.get('/campgrounds/:id')
 server->routerCampgrounds ++:app.use('/campgrounds',campgrounds)
 routerCampgrounds -> controllersCampgrounds ++:getCampground()
 controllersCampgrounds->modelCampground ++:findById(req.params.id)

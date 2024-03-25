@@ -12,7 +12,7 @@ const CampgroundSchema = new mongoose.Schema(
 
     coordinate: {
       type: String,
-      required: [true, "Please add a cooradinate"],
+      required: [true, "Please add a coordinate"],
     },
 
     province: {
@@ -33,6 +33,10 @@ const CampgroundSchema = new mongoose.Schema(
     region: {
       type: String,
       required: [true, "Please add a region"],
+    },
+
+    picture: {
+      type: String,
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }

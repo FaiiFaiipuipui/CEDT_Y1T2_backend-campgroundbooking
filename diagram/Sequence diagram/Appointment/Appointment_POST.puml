@@ -7,6 +7,7 @@ title "Manage Appointment (POST)"
 actor "User" as user
 actor "Admin" as admin
 participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:campgrounds" as routerCampgrounds
 participant "<<router>>\n:appointments" as routerAppointments
 participant "<<middleware>>\n:auth" as middlewareAuth
 participant "<<model>>\n:User" as modelUser
@@ -15,9 +16,10 @@ participant "<<model>>\n:Appointment" as modelAppointment
 database "<<MongoDB>>\n:appointments" as CampgroundsDatabase
 database "<<MongoDB>>\n:users" as UsersDatabase
 
-user->server ++:req.post('/appointments')
-admin->server ++:req.post('/appointments')
-server->routerAppointments ++:app.use('/appointments',appointments)
+user->server ++:req.get('/campgrounds/:campgoundId/appointments/')
+admin->server ++:req.get('/campgrounds/:campgoundId/appointments/')
+server->routerCampgrounds ++:app.use('/campgrounds',campgrounds)
+routerCampgrounds -> routerAppointments ++:router.use('/:campgoundId/appointments/, appointmentRouter)
 routerAppointments -> middlewareAuth ++:protect(token)
 middlewareAuth -> modelUser ++:findById(decode.id)
 modelUser -> UsersDatabase ++:findById(decode.id)
