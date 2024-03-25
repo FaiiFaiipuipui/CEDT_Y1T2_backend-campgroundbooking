@@ -39,7 +39,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(hpp());
 const corsOptions = {
-  origin: "*",
+  origin: "https://frontend-campgroundbooking.vercel.app/",
   credentials: false,
 };
 app.use(cors(corsOptions));
