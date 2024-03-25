@@ -75,7 +75,7 @@ package "Campground Booking System (CBS)"{
 CBSService ..> ResourceCampgrounds:"/campgrounds\n<<Path>>"
 ResourceCampgrounds ..> ResourceCampground: "/{campgroundId}\n<<Path>>"
 ResourceCampgrounds ..> RepresentationCampground: "<<Use>>"
-ResourceCampground ..> AddResourceAppointments: "<<Use>>"
+ResourceCampground ..> AddResourceAppointments: "/appointment\n<<Path>>"
 ResourceCampground ..> RepresentationCampground: "<<Use>>"
 
 CBSService ..> ResourceAppointments: "/appointment\n<<Path>>"
