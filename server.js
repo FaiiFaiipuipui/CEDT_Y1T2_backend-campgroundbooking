@@ -29,6 +29,9 @@ app.use(express.json());
 // Cookie parser
 app.use(cookieParser());
 
+// Cors Enabler
+app.use(cors());
+
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
 app.use("/api/v1/auth", auth);
@@ -43,7 +46,6 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
