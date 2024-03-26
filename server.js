@@ -31,7 +31,9 @@ app.use(cookieParser());
 
 app.use(mongoSanitize());
 app.use(helmet({
-  crossOriginOpenerPolicy: false
+  crossOriginOpenerPolicy: false,
+  crossOriginEmbedderPolicy: { policy: "credentialless" },
+  crossOriginResourcePolicy: false,
 }));
 app.use(xss());
 const limiter = rateLimit({
