@@ -18,11 +18,13 @@ const app = express();
 
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
-app.use(helmet({
-  crossOriginOpenerPolicy: false,
-  crossOriginEmbedderPolicy: { policy: "credentialless" },
-  crossOriginResourcePolicy: false,
-}));
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: false,
+    crossOriginEmbedderPolicy: { policy: "credentialless" },
+    crossOriginResourcePolicy: false,
+  })
+);
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
@@ -42,14 +44,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-app.use(cors());
+// app.use(cors());
 
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/appointments", appointment);
-
-
 
 const PORT = process.env.PORT || 5000;
 
