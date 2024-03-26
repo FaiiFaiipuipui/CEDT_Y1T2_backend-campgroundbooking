@@ -44,7 +44,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-// app.use(cors());
+app.use(cors());
 
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
