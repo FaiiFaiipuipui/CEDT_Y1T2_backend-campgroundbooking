@@ -30,7 +30,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(mongoSanitize());
-app.use(helmet());
+app.use(helmet({
+  crossOriginOpenerPolicy: false
+}));
 app.use(xss());
 const limiter = rateLimit({
   windowMS: 10 * 60 * 1000,
