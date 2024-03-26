@@ -42,11 +42,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 app.use(hpp());
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  credentials: false,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Mount routers
 app.use("/api/v1/campgrounds", campgrounds);
