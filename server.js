@@ -18,13 +18,6 @@ const app = express();
 
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
-app.use(
-  helmet({
-    crossOriginOpenerPolicy: false,
-    crossOriginEmbedderPolicy: { policy: "credentialless" },
-    crossOriginResourcePolicy: false,
-  })
-);
 const { xss } = require("express-xss-sanitizer");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
@@ -37,6 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(mongoSanitize());
+app.use(helmet());
 app.use(xss());
 const limiter = rateLimit({
   windowMS: 10 * 60 * 1000,
