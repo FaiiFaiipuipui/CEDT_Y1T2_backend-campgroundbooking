@@ -8,7 +8,7 @@ number,name,coordinate,province,postalcode,telephone,region,picture
 7,อุทยานแห่งชาติเขาหลวง,8°22′25″N 99°44′06″E,นครศรีธรรมราช,80230 ,075300494,ภาคใต้,https://drive.google.com/uc?id=1VEUnlmCljg7GDyRO_jFSk9HpAeURbGKT
 8,อุทยานแห่งชาติน้ำตกพลิ้ว,12°31′53″N 102°11′14″E,จันทบุรี,22190,039434528,ภาคตะวันออก ,https://drive.google.com/uc?id=1CYDYWCC8Va1oiHxEBg0Hv3PZSYUp8lzb
 9,อุทยานแห่งชาติเอราวัณ,14°22′28″N 99°08′44″E,กาญจนบุรี,71250 ,034574222,ภาคกลาง,https://drive.google.com/uc?id=1_kwsjQc1INZ-_mgxYLEh4OEjq4WVmXpV
-10,อุทยานแห่งชาติเขาคิชฌกูฏ,12°50′20″N 102°07′16″E,จันทบุรี,22210 ,039609666,ภาคตะวันออก ,https://drive.google.com/uc?id=16nrYjtkwdcXIGH_f2tXD5Moo4VrxxEqBk
+10,อุทยานแห่งชาติเขาคิชฌกูฏ,12°50′20″N 102°07′16″E,จันทบุรี,22210 ,039609666,ภาคตะวันออก ,https://drive.google.com/uc?id=16nrYjtkwdcXIGH_f2tXD5Moo4VrxxEqB
 11,อุทยานแห่งชาติลานสาง,16°46′56″N 99°00′59″E,ตาก,63000 ,055577207,ภาคเหนือ,https://drive.google.com/uc?id=11H0-_wCIrzRwW89aTTI0DAgTbiRNSeqT
 12,อุทยานแห่งชาติภูเรือ,17°28′54″N 101°21′07″E,เลย,42160 ,042810965,ภาคตะวันออกเฉียงเหนือ,https://drive.google.com/uc?id=1VOHp18pmjME0lCFWhTl35YQPfUFElVc9
 13,อุทยานแห่งชาติเฉลิมรัตนโกสินทร์,14°39′40″N 99°18′15″E,กาญจนบุรี,71220 ,034547020,ภาคกลาง,https://drive.google.com/uc?id=1BSdKWOYvub6p5PMT1hn8sBjcquWKwycQ
@@ -38,14 +38,14 @@ number,name,coordinate,province,postalcode,telephone,region,picture
 37,อุทยานแห่งชาติหมู่เกาะสิมิลัน,8°34′04″N 97°38′12″E,พังงา,82210,076453272,ภาคใต้,https://drive.google.com/uc?id=1Xtvez1YbtOgOI2uySiJgPoFLAYfQPdTb
 38,อุทยานแห่งชาติคลองลาน,16°07′46″N 99°16′51″E,กำแพงเพชร,62180,0884079915,ภาคเหนือ,https://drive.google.com/uc?id=1o6DzCl11Rb4KcdWWunaE9jXXgNVXpUYC
 39,อุทยานแห่งชาติหมู่เกาะช้าง,12°03′52″N 102°19′57″E,ตราด,23170,039510928,ภาคตะวันออก,https://drive.google.com/uc?id=1_8fzEcsZT1yazyIbZaOmDiQ5pICz6LVd
-40,อุทยานแห่งชาติหาดนพรัตน์ธารา-หมู่เกาะพีพี,8°02′50″N 98°47′57″E,กระบี่,81180,075661145,ภาคใต้,https://drive.google.com/uc?id=10OQYWyLoOS4w5qVXZi_e82ixyc-NM8Gxk
+40,อุทยานแห่งชาติหาดนพรัตน์ธารา-หมู่เกาะพีพี,8°02′50″N 98°47′57″E,กระบี่,81180,075661145,ภาคใต้,https://drive.google.com/uc?id=10OQYWyLoOS4w5qVXZi_e82ixyc-NM8Gx
 41,อุทยานแห่งชาติเขาลำปี-หาดท้ายเหมือง,8°26′17″N 98°14′12″E,พังงา,82120,076679136,ภาคใต้,https://drive.google.com/uc?id=1T2gtzR4i82PzbHCva-pXNofaEfKK8LNa
 42,อุทยานแห่งชาติภูจอง-นายอย,14°26′03″N 105°15′10″E,อุบลราชธานี,34280,045210706,ภาคตะวันออกเฉียงเหนือ,https://drive.google.com/uc?id=1HvqJaZE6QveNZj8N6ywK_8JyukilSh05
 43,อุทยานแห่งชาติน้ำตกชาติตระการ,17°18′08″N 100°40′40″E,พิษณุโลก,65170,055906522,ภาคเหนือ,https://drive.google.com/uc?id=18TwxD2TXg0eSlvxxHh7z5DXbcp8gLUjv
 44,อุทยานแห่งชาติศรีพังงา,8°59′53″N 98°27′30″E,พังงา,82150,0869525246,ภาคใต้,https://drive.google.com/uc?id=1khbdwPulGXHMi0_7MXSMC02DFJlniuze
 45,อุทยานแห่งชาติแจ้ซ้อน,18°50′11″N 99°28′10″E,ลำปาง,52240,0898513355,ภาคเหนือ,https://drive.google.com/uc?id=1vckVzcRbSsXzO1DhPBS4FtozF8LCaogI
 46,อุทยานแห่งชาติภูผาเทิบ,16°26′01″N 104°48′10″E,มุกดาหาร,49000,0942892383,ภาคตะวันออกเฉียงเหนือ,https://drive.google.com/uc?id=1kbK4DHaglfAPpfM21zfWKYDIDplB_hSn
-47,อุทยานแห่งชาติศรีลานนา,19°10′41″N 99°01′50″E,เชียงใหม่,50150,053317495,ภาคเหนือ,https://drive.google.com/uc?id=1XI0qX_DGGJ2qiFq1pACF7AeU1_wyMAco/view?usp=sharing
+47,อุทยานแห่งชาติศรีลานนา,19°10′41″N 99°01′50″E,เชียงใหม่,50150,053317495,ภาคเหนือ,https://drive.google.com/uc?id=1XI0qX_DGGJ2qiFq1pACF7AeU1_wyMAco
 48,อุทยานแห่งชาติหมู่เกาะลันตา,7°28′13″N 99°05′58″E,กระบี่,81150,075656576,ภาคใต้,https://drive.google.com/uc?id=1DKbCF1YsKUMi3pk4zRCRDqtbBkQnHWEk
 49,อุทยานแห่งชาติน้ำตกโยง,8°10′23″N 99°44′43″E,นครศรีธรรมราช,80110,075809277,ภาคใต้,https://drive.google.com/uc?id=1nMg-NKLITmrceQm7akCmFGU0gQfwHUeH
 50,อุทยานแห่งชาติเขาน้ำค้าง,6°36′01″N 100°35′19″E,สงขลา,90160,074531696,ภาคใต้,https://drive.google.com/uc?id=1mdiZTa_qRKFKnZTEHufYv1W-w0oTA4av
