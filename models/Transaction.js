@@ -44,8 +44,24 @@ const TransactionSchema = new mongoose.Schema(
   }
 )
 
-//TODO Cascade delete?
+// Cascade delete appointments when a transaction is deleted
+CampgroundSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    console.log(`Transaction Slip being removed from transaction ${this._id}`);
+    await this.model("TransactionSlip").deleteMany({ transaction: this._id });
+    next();
+  }
+);
 
-//TODO add virtuals?
+//Add tracnsactionSlip virtual to transaction
+
+TransactionSchema.virtual("transactionSlip", {
+  ref: "TransactionSlip",
+  localField: "_id",
+  foreignField: "transaction",
+  justOne: false,
+});
 
 module.exports = mongoose.model("Transaction", TransactionSchema);
