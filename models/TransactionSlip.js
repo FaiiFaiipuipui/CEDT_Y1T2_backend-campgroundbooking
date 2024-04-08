@@ -4,7 +4,7 @@ const TransactionSlipSchema = new mongoose.Schema(
   {
     slip_image: {
       /* Encoded in Base64 */
-      type: Buffer,
+      type: Buffer,         
       required: true
     },
     submit_time: {

@@ -48,6 +48,8 @@ entity transaction_slip {
   slip_id : ObjectId <<PK>>
   slip_image : binData /' image file, must be compressed to be less than 2 MB preferrably for efficient database querying, and for storage efficiency (mongoDB BSON max size is 16 MB) '/
   submit_time : date
+  --
+  payment_id : ObjectId <<FK>>
 }
 
 ' entity relation
