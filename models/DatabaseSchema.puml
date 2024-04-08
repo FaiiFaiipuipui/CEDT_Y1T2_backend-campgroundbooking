@@ -17,8 +17,8 @@ entity appointment {
   apptDate : date
   createdAt : date
   --
-  user_id : ObjectId <<FK>>
-  campground_id : ObjectId <<FK>>
+  user : ObjectId <<FK>>
+  campground : ObjectId <<FK>>
 }
 
 entity user {
@@ -37,9 +37,9 @@ entity transaction {
   successful_payment_date : date
   --
   slip_images = ObjectId[] <<FK>>
-  campground_id : ObjectId <<FK>>
-  customer_id : ObjectId <<FK>>
-  appointment_id : ObjectId <<FK>>
+  campground : ObjectId <<FK>>
+  user : ObjectId <<FK>>
+  appointment : ObjectId <<FK>>
 }
 
 
