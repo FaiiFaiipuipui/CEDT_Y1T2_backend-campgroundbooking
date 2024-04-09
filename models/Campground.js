@@ -76,7 +76,7 @@ CampgroundSchema.virtual("announcements",{
   ref: "Announcement",
   localField: "_id",
   foreignField: "campground",
-  justOne: true,
+  justOne: false,
 });
 
 module.exports = mongoose.model("Campground", CampgroundSchema);

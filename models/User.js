@@ -61,7 +61,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 UserSchema.pre("deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`Announcement being removed which was written by author ID: ${this._id}`);
+    console.log(`Announcement being removed which was created by author ID: ${this._id}`);
     await this.model("Announcement").deleteMany({ author: this._id });
     next();
   }
