@@ -30,4 +30,20 @@ const AnnouncementSchema = new mongoose.Schema({
     }
 })
 
+//Campground populated with virtual
+AnnouncementSchema.virtual("campground",{
+    ref: 'Campground',
+    localField: '_id',
+    foreignField: 'campground',
+    justOne: true,
+})
+
+//Author populate with virtual [necessary]
+// AnnouncementSchema.virtual("author",{
+//     ref: 'User',
+//     localField: '_id',
+//     foreignField: 'author',
+//     justOne: true,
+// });
+
 module.exports = mongoose.model('Announcement', AnnouncementSchema);

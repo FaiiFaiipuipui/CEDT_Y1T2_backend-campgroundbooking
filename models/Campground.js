@@ -53,11 +53,30 @@ CampgroundSchema.pre(
   }
 );
 
-// Reverse populate with virtuals
+//Cascade delete announcements when a campground is deleted
+CampgroundSchema.pre("deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    console.log(`Announcement being removed from campground ${this._id}`);
+    await this.model("Announcement").deleteMany({ campground: this._id });
+    next();
+  }
+);
+
+// Reverse populate with virtual
 CampgroundSchema.virtual("appointments", {
   ref: "Appointment",
   localField: "_id",
   foreignField: "campground",
   justOne: false,
 });
+
+//Announcement populate with virtual
+CampgroundSchema.virtual("announcements",{
+  ref: "Announcement",
+  localField: "_id",
+  foreignField: "campground",
+  justOne: true,
+});
+
 module.exports = mongoose.model("Campground", CampgroundSchema);
