@@ -36,7 +36,8 @@ entity transaction {
   rent_date : date
   successful_payment_date : date
   --
-  slip_images = ObjectId[] <<FK>>
+  submitted_slip_images : ObjectId[] <<FK>>
+  successful_payment_slip_image : ObjectId <<FK>> 
   campground : ObjectId <<FK>>
   user : ObjectId <<FK>>
   appointment : ObjectId <<FK>>

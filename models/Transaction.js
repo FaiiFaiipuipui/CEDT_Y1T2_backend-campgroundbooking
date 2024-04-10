@@ -18,11 +18,17 @@ const TransactionSchema = new mongoose.Schema(
       type: Date
     },
 
-    slip_images: {
+    submitted_slip_images: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "transaction_slip"
       }]
+    },
+
+    successful_payment_slip_image: {
+      type: mongoose.Schema.ObjectId,
+      ref: "transaction_slip",
+      default: null
     },
 
     campground: {
