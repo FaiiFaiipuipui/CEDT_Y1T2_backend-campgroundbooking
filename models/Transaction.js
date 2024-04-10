@@ -22,7 +22,8 @@ const TransactionSchema = new mongoose.Schema(
       type: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "transaction_slip"
-      }]
+      }],
+      default: []
     },
 
     successful_payment_slip_image: {
