@@ -52,7 +52,7 @@ const TransactionSchema = new mongoose.Schema(
 )
 
 // Cascade delete appointments when a transaction is deleted
-CampgroundSchema.pre(
+TransactionSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
