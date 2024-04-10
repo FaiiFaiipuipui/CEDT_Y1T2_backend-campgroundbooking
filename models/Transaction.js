@@ -19,9 +19,10 @@ const TransactionSchema = new mongoose.Schema(
     },
 
     slip_images: {
-      // TODO Please Check if this declaration is valid or not
-      type: [mongoose.Schema.ObjectId],
-      ref: "transaction_slip"
+      type: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "transaction_slip"
+      }]
     },
 
     campground: {
