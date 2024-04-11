@@ -64,13 +64,4 @@ TransactionSchema.pre(
   }
 );
 
-//Add tracnsactionSlip virtual to transaction
-
-TransactionSchema.virtual("transactionSlip", {
-  ref: "TransactionSlip",
-  localField: "_id",
-  foreignField: "transaction",
-  justOne: false,
-});
-
 module.exports = mongoose.model("Transaction", TransactionSchema);
