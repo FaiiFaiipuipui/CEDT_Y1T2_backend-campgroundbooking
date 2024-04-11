@@ -38,6 +38,11 @@ const CampgroundSchema = new mongoose.Schema(
     picture: {
       type: String,
     },
+
+    pricing: {
+      type: Number,
+      required: [true, "Please add a pricing"],
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
 );
