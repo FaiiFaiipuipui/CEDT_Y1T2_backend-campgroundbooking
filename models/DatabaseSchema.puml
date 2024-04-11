@@ -1,0 +1,63 @@
+@startuml DatabaseSchema
+
+skinparam Linetype ortho
+
+entity campground {
+  campground_id : ObjectId <<PK>>
+  name : string
+  coordinate : string
+  province : string
+  postalcode : string
+  telephone : string
+  region : string
+  picture : string
+}
+entity appointment {
+  appointment_id : ObjectId <<PK>>
+  apptDate : date
+  createdAt : date
+  --
+  user : ObjectId <<FK>>
+  campground : ObjectId <<FK>>
+}
+
+entity user {
+  user_id : ObjectId <<PK>>
+  name : string
+  telephone : string
+  email : string
+  role : string
+  password : string
+}
+
+entity transaction {
+  payment_id : ObjectId <<PK>>
+  status : string /' status: [PENDING, COMPLETE, REJECTED, CANCELED] '/
+  rent_date : date
+  successful_payment_date : date
+  --
+  submitted_slip_images : ObjectId[] <<FK>>
+  successful_payment_slip_image : ObjectId <<FK>> 
+  campground : ObjectId <<FK>>
+  user : ObjectId <<FK>>
+  appointment : ObjectId <<FK>>
+}
+
+
+
+entity transaction_slip {
+  slip_id : ObjectId <<PK>>
+  slip_image : binData /' image file, must be compressed to be less than 2 MB preferrably for efficient database querying, and for storage efficiency (mongoDB BSON max size is 16 MB) '/
+  submit_time : date
+  --
+  payment_id : ObjectId <<FK>>
+}
+
+' entity relation
+user ||--o{ appointment
+user ||--o{ transaction
+campground ||--|| appointment
+campground ||--o{ transaction
+transaction ||.right.o{ transaction_slip /' ONE to ZERO_OR_MANY '/
+transaction ||--|| appointment
+@enduml
