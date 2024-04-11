@@ -63,7 +63,7 @@ CampgroundSchema.pre("deleteOne",
   }
 );
 
-// Reverse populate with virtual
+// Appointment populate with virtual
 CampgroundSchema.virtual("appointments", {
   ref: "Appointment",
   localField: "_id",

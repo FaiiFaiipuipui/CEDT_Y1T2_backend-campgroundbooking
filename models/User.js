@@ -57,14 +57,4 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-//Cascade delete announcements when a user is deleted
-UserSchema.pre("deleteOne",
-  { document: true, query: false },
-  async function (next) {
-    console.log(`Announcement being removed which was created by author ID: ${this._id}`);
-    await this.model("Announcement").deleteMany({ author: this._id });
-    next();
-  }
-);
-
 module.exports = mongoose.model("User", UserSchema);
