@@ -49,7 +49,8 @@ const TransactionSchema = new mongoose.Schema(
       ref: "Appointment",
       required: true,
     }
-  }
+  },
+  { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
 )
 
 // Cascade delete appointments when a transaction is deleted
