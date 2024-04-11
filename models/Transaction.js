@@ -21,14 +21,14 @@ const TransactionSchema = new mongoose.Schema(
     submitted_slip_images: {
       type: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "transaction_slip"
+        ref: "TransactionSlip"
       }],
       default: []
     },
 
     successful_payment_slip_image: {
       type: mongoose.Schema.ObjectId,
-      ref: "transaction_slip",
+      ref: "TransactionSlip",
       default: null
     },
 
