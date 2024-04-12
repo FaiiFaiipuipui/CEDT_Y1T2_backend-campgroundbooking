@@ -1,5 +1,8 @@
 const Transaction = require('../models/Transaction');
 
+// @desc:    Get all transactions
+// @route:   GET /api/v1/transactions
+// @access:  Private
 exports.getTransactions = async (req, res, next) => {
     if (req.user.role !== 'admin') {
         return res.status(401).json({
@@ -25,6 +28,25 @@ exports.getTransactions = async (req, res, next) => {
     }
 };
 
+// @desc:    Get a single transaction with an id
+// @route:   GET /api/v1/transactions/:id
+// @access:  Private
 exports.getTransaction = async (req, res, next) => {
+    try {
+        const transaction = await Transaction.findById(req.params.id);
     
+        if (!transaction) {
+          return res.status(400).json({ success: false });
+        }
+    
+        res.status(200).json({
+          success: true,
+          data: campground,
+        });
+      } catch (err) {
+        res.status(400).json({
+          success: false,
+          error: err.message,
+        });
+      }
 };
