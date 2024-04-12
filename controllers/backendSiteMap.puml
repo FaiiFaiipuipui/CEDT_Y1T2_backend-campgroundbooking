@@ -8,6 +8,7 @@ api --> v1
 v1 --> campgrounds : ROUTER campgrounds
 v1 --> auth : ROUTER auth
 v1 --> appointments : ROUTER appointments
+v1 --> transactions : ROUTER transactions
 
 /' campground '/
 campgrounds --> getCampgrounds : GET
@@ -58,5 +59,9 @@ appointments --> appointmentID
 appointmentID --> getAppointment : GET
 appointmentID --> updateAppointment : PUT
 appointmentID --> deleteAppointment : DELETE
+
+/' transactions '/
+transactions --> promptpayqr 
+promptpayqr --> promptpayQR : POST
 
 @enduml
