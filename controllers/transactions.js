@@ -41,6 +41,22 @@ exports.getTransactions = async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
+  if (req.user.role !== "admin") {
+    query = Transaction.find({ user: req.user.id }).populate({
+      path: "appointment",
+      select: "user campground",
+    });
+  } else {
+    // If you are an admin, you can see all!
+    if (req.params.transactionId) {
+      console.log(req.params.transactionId);
+      query = Transaction.find({
+        campground: req.params.transactionId,
+      })
+    } else
+      query = Transaction.find()
+  }
+
   try {
     const transactions = await query;
 
@@ -83,7 +99,10 @@ exports.getTransaction = async (req, res, next) => {
     const transaction = await Transaction.findById(req.params.id);
 
     if (!transaction) {
-      return res.status(400).json({ success: false });
+      return res.status(404).json({ 
+        success: false,
+        message: `No transaction with the id of ${req.params.id}`
+      });
     }
   
     res.status(200).json({
@@ -91,9 +110,9 @@ exports.getTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
-      error: err.message,
+      message: "Cannot find transaction"
     });
   }
 };
