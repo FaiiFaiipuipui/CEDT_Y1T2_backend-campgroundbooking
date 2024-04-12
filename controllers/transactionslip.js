@@ -1,12 +1,23 @@
-const transaction = require('../models/Transaction');
-const transactionSlip = require('../models/TransactionSlip');
+const Transaction = require('../models/Transaction');
+const TransactionSlip = require('../models/TransactionSlip');
 
-// @desc    Update appointment
-// @route   PUT /api/v1/transactions/:transactionId/transactionslips/
+// @desc    Add transactionSlip
+// @route   POST /api/v1/transactions/:transactionId/transactionslips/
 // @access  Private
-exports.createTransactionSlip = async (req, res, next) => {
+exports.addTransactionSlip = async (req, res, next) => {
     try{
-        const transactionSlip = await transactionSlip.create(req.body);
+        req.body.payment_id = req.params.transactionId;
+
+        //check transaction
+        const transaction = await Transaction.findById(req.params.transactionId);
+        if(!transaction){
+            return res.status(404).json({
+                success: false,
+                message: `Cannot find transaction with id: ${req.params.transactionId}`
+            });
+        }
+
+        const transactionSlip = await TransactionSlip.create(req.body);
         res.status(201).json({
             success: true,
             data: transactionSlip
