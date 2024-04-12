@@ -2,7 +2,7 @@ const express = require('express');
 
 const { addTransaction } = require('../controllers/transactions')
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
 
 router
