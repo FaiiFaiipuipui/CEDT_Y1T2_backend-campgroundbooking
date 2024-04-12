@@ -61,7 +61,10 @@ appointmentID --> updateAppointment : PUT
 appointmentID --> deleteAppointment : DELETE
 
 /' transactions '/
-transactions --> promptpayqr 
+transactions --> promptpayqr
+state ":appointmentID" as TRANSACTIONappointmentid
+transactions --> TRANSACTIONappointmentid
+TRANSACTIONappointmentid --> createTransaction : POST
 promptpayqr --> promptpayQR : POST
 
 @enduml
