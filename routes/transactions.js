@@ -11,3 +11,5 @@ router
 router
     .route('/:id')
     .get(protect, authorize('admin'), getTransaction);
+
+module.exports = router;
