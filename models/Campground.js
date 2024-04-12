@@ -39,9 +39,9 @@ const CampgroundSchema = new mongoose.Schema(
       type: String,
     },
 
-    pricing: {
-      type: Number,
-      required: [true, "Please add a pricing"],
+    price: {
+      type: Schema.Types.Decimal128,
+      required: [true, "Please add a price"],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
