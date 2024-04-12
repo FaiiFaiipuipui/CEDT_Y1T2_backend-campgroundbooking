@@ -41,7 +41,7 @@ exports.getTransaction = async (req, res, next) => {
     
         res.status(200).json({
           success: true,
-          data: campground,
+          data: transaction,
         });
       } catch (err) {
         res.status(400).json({
