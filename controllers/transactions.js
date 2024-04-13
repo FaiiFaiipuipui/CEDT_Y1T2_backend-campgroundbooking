@@ -106,7 +106,7 @@ exports.getTransaction = async (req, res, next) => {
     const transaction = await Transaction.findById(req.params.id).populate({
       path: "appointment",
       select: "user campground",
-    });;
+    });
 
     if (!transaction) {
       return res.status(404).json({ 
@@ -115,6 +115,16 @@ exports.getTransaction = async (req, res, next) => {
       });
     }
   
+    if (
+      transaction.user.toString() !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: `User ${req.user.id} is not authorized to access this transaction`,
+      });
+    }
+    
     res.status(200).json({
       success: true,
       data: transaction,
