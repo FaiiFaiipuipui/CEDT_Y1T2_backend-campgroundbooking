@@ -4,7 +4,7 @@ const { createPromptPayQR } = require("../utils/createPromptpayQR")
 
 /**
  * @desc create promptpayQR with req body
- * @route POST /api/v1/transactions
+ * @route POST /api/v1/transactions/promptpayqr
  * @access Private
  * @param req.body : promptpayID, appointmentID
  */
