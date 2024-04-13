@@ -41,20 +41,16 @@ exports.getTransactions = async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (req.user.role !== "admin") {
-    query = Transaction.find({ user: req.user.id }).populate({
+  if (req.params.transactionId) {
+    console.log(req.params.transactionId);
+    query = Transaction.find({
+      campground: req.params.transactionId,
+    }).populate({
       path: "appointment",
       select: "user campground",
     });
   } else {
-    // If you are an admin, you can see all!
-    if (req.params.transactionId) {
-      console.log(req.params.transactionId);
-      query = Transaction.find({
-        campground: req.params.transactionId,
-      })
-    } else
-      query = Transaction.find()
+    query = Transaction.find()
   }
 
   try {
@@ -96,7 +92,10 @@ exports.getTransactions = async (req, res, next) => {
 // @access:  Private
 exports.getTransaction = async (req, res, next) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
+    const transaction = await Transaction.findById(req.params.id).populate({
+      path: "appointment",
+      select: "user campground",
+    });;
 
     if (!transaction) {
       return res.status(404).json({ 

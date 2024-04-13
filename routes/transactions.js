@@ -10,6 +10,6 @@ router
 
 router
     .route('/:id')
-    .get(protect, authorize('admin'), getTransaction);
+    .get(protect, authorize('admin', 'user'), getTransaction);
 
 module.exports = router;
