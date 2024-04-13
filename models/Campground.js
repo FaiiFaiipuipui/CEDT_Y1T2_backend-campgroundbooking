@@ -40,7 +40,7 @@ const CampgroundSchema = new mongoose.Schema(
     },
 
     price: {
-      type: Schema.Types.Decimal128,
+      type: mongoose.Types.Decimal128,
       required: [true, "Please add a price"],
     },
   },
