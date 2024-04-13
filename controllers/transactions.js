@@ -10,6 +10,7 @@ const { createPromptPayQR } = require("../utils/createPromptpayQR")
  */
 exports.createPromptpayQR = async (req, res, next) => {
   try {
+    console.log(req.body);
     const data = req.body;
 
     if (!data.promptpayID || !data.appointmentID ) {
@@ -34,19 +35,23 @@ exports.createPromptpayQR = async (req, res, next) => {
       throw error;
     }
 
+    console.dir(campground.price, {showHidden: false, depth: null, colors: true});
     if (!campground.price) {
       const error = new Error(`campground with the ID of ${appointment.campground} does not exist price attribute`)
       error.code = 500;
       throw error
     }
 
-    const returnData = createPromptPayQR(data.promptpayID, campground.price);
-  
-    if (returnData === 'error') {
-      const error = new Error("QR code Creation Function failed");
-      error.code = 500;
-      throw error;
-    }
+    let returnData;
+    await createPromptPayQR(data.promptpayID, campground.price)
+    .then((data) => {
+      returnData = data;
+      if (returnData === 'error') {
+        const error = new Error("QR code Creation Function failed");
+        error.code = 500;
+        throw error;
+      }
+    })
 
     res.status(200).json({
       success: true,
