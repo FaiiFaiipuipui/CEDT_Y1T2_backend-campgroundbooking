@@ -4,7 +4,7 @@
   "description": "2110503 Software development final project",
   "main": "server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles  --watchAll --maxWorkers=1",
     "dev": "nodemon server.js"
   },
   "author": "Gift, Champ, Puifaii, Anda, Yiwha, Nene, Cherry, Model, Kaning",
@@ -32,6 +32,7 @@
     "time-stamps": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.4"
   }
 }
