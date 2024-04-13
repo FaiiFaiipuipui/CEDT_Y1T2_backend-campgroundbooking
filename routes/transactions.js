@@ -6,6 +6,6 @@ const router = express.Router({ mergeParams: true });
 
 router
   .route('/promptpayqr')
-  .post(/* protect, authorize("admin", "user"), */ createPromptpayQR);
+  .post(protect, authorize("admin", "user"), createPromptpayQR);
 
 module.exports = router;
