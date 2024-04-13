@@ -41,16 +41,26 @@ exports.getTransactions = async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (req.params.transactionId) {
-    console.log(req.params.transactionId);
-    query = Transaction.find({
-      campground: req.params.transactionId,
+  if (req.user.role !== "admin") {
+    query = Transaction.find({ user: req.user.id }).populate({
+      path: "appointment",
+      select: "user campground"
+    });
+  } else {
+    if (req.params.transactionId) {
+      console.log(req.params.transactionId);
+      query = query.find({
+        campground: req.params.transactionId,
     }).populate({
       path: "appointment",
       select: "user campground",
     });
-  } else {
-    query = Transaction.find()
+    } else {
+      query = query.find().populate({
+        path: "appointment",
+        select: "user campground",
+      });
+    }
   }
 
   try {
@@ -80,9 +90,10 @@ exports.getTransactions = async (req, res, next) => {
     });
     console.log('success', transactions.length);
   } catch (err) {
-    res.status(400).json({
+    console.log(err.stack);
+    res.status(500).json({
       success: false,
-      error: err.message,
+      message: "Cannot find any transaction",
     });
   }
 };
