@@ -57,7 +57,7 @@ entity transactionSlip {
 ' entity relation
 user ||--o{ appointment
 user ||--o{ transaction
-campground ||--|| appointment
+campground ||--o{ appointment
 campground ||--o{ transaction
 transaction ||.left.o{ transactionSlip /' ONE to ZERO_OR_MANY '/
 transaction ||--|| appointment
