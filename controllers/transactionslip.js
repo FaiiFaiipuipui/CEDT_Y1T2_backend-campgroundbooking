@@ -34,19 +34,20 @@ exports.getTransactionSlips = async (req, res, next) => {
   };
   
   // @desc    Get single transactionSlip
-  // @route   GET /api/v1/transactionslips/:transactionSlipId
+  // @route   GET /api/v1/transactionslips/:id
   // @access  Public
   exports.getTransactionSlip = async (req, res, next) => {
     try {
-      const transactionSlip = await TransactionSlip.findById(req.params.transactionSlipId);
+      const transactionSlip = await TransactionSlip.findById(req.params.id);
   
       if (!transactionSlip) {
         return res.status(404).json({
           success: false,
-          message: `No transaction slip with the id of ${req.params.transactionSlipId}`,
+          message: `No transaction slip with the id of ${req.params.id}`,
         });
       }
-      res.status(200).json({ success: true, data: appointment });
+
+      res.status(200).json({ success: true, data: transactionSlip });
     } catch (error) {
       console.log(error);
       return res
@@ -72,6 +73,11 @@ exports.addTransactionSlip = async (req, res, next) => {
         }
 
         const transactionSlip = await TransactionSlip.create(req.body);
+
+        //after created slip, add slip to transaction
+        transaction.submitted_slip_images.push(transactionSlip._id);
+        transaction.save();
+
         res.status(201).json({
             success: true,
             data: transactionSlip

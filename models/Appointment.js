@@ -24,4 +24,15 @@ const AppointmentSchema = new mongoose.Schema({
   },
 });
 
+//Cascade update transaction's status: CANCEL when appointment deleted
+AppointmentSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    console.log(`transaction which has appointmentID: ${this._id}, status: CANCEL`);
+    await this.model("Transaction").updateMany({appointment: this._id},{status: "CANCEL"});
+    next();
+  }
+);
+
 module.exports = mongoose.model("Appointment", AppointmentSchema);

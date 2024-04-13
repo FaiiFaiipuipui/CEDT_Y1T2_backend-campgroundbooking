@@ -1,56 +1,86 @@
 const Transaction = require("../models/Transaction");
+const TransactionSlip = require("../models/TransactionSlip");
 
 // @desc    Update transaction [slip]
 // @route   PUT /api/v1/transactions/:transactionId
 // @access  Private
 exports.updateTransaction = async (req, res, next) => {
-    try {
+  try {
+    let transaction = await Transaction.findById(req.params.transactionId);
 
-        let transaction = await Transaction.findById(req.params.transactionId);
+    //check transaction
+    if (!transaction) {
+      return res.status(404).json({
+        success: false,
+        message: `No transaction with the id of ${req.params.transactionId}`,
+      });
+    }
 
-        //check transaction
-        if(!transaction){
-          return res.status(404).json({
-            success: false,
-            message: `No transaction with the id of ${req.params.transactionId}`,
-          });
-        }
+    // Status : [PENDING, COMPLETE, REJECTED, CANCELED]
 
-      /*
-        Status : [PENDING, COMPLETE, REJECTED, CANCELED]
-        User can update when transaction was rejected by admin
-        Admin can update when transaction was pending after user upload slip
-      */
+    //check status transaction is not COMPLETE and CANCELED
+    if (transaction.status === "COMPLETE" || transaction.status === "CANCELED") {
+      return res.status(404).json({
+        success: false,
+        message: `Transaction with the id of ${req.params.transactionId}'s status is not available to update`,
+      });
+    }
 
+    //Check User or Admin
+
+    if (req.user.role === "admin") {
+      // ADMIN CASE: Admin can update when transaction was PENDING after user upload slip
+
+      //Check status of transaction
+      if (transaction.status !== "PENDING") {
+        return res.status(404).json({
+          success: false,
+          message: `Transaction with the id of ${req.params.transactionId}'s status is not available to check`,
+        });
+      }
+
+    } else {
+      // USER CASE: When admin rejected transaction, USER will see transaction's status: PENDING 
+   
       // Make sure user is the transaction owner
-        if(transaction.user.toString() !== req.user.id && req.user.role !== "admin"){
+      if (transaction.user.toString() !== req.user.id &&req.user.role !== "admin") {
+        return res.status(401).json({
+          success: false,
+          message: `User ${req.user.id} is not authorized to update this transaction`,
+        });
+      } 
+        
+      //Check status of transaction
+      if (transaction.status !== "REJECTED") {
           return res.status(401).json({
             success: false,
-            message: `User ${req.user.id} is not authorized to update this transaction`,
+            message: `Cannot update transaction with the id of ${req.params.transactionId}`,
           });
         }
-        else {
-          if(transaction.status !== 'REJECTED'){
-            return res.status(401).json({
-              success: false,
-              message: `Cannot update transaction with the id of ${req.params.transactionId}`,
-            });
-          }
-        }
+      }
+    
+    //Update value of transaction [Admin: update status, User: update slip]
+    transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
-      transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-      });
-  
-      res.status(200).json({
-        success: true,
-        data: transaction,
-      });
-    } catch (err) {
-      console.log(err.stack);
-      return res
-        .status(500)
-        .json({ success: false, message: "Cannot update transaction" });
+    //If NEW STATUS is COMPLETE
+    if(transaction.status === "COMPLETE") {
+      const transactionSlipId = transaction.submitted_slip_images[transaction.submitted_slip_images.length-1]
+      const transactionSlip = await TransactionSlip.findById(transactionSlipId);
+      transaction.successful_payment_date = transactionSlip.submit_time;
+      transaction.successful_payment_slip_image = transactionSlipId;
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      data: transaction,
+    });
+  } catch (err) {
+    console.log(err.stack);
+    return res
+      .status(500)
+      .json({ success: false, message: "Cannot update transaction" });
+  }
+};
