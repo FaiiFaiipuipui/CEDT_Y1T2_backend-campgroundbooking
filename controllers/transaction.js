@@ -1,18 +1,18 @@
 const Transaction = require("../models/Transaction");
 const TransactionSlip = require("../models/TransactionSlip");
 
-// @desc    Update transaction [slip]
-// @route   PUT /api/v1/transactions/:transactionId
+// @desc    Update transaction
+// @route   PUT /api/v1/transactions/:id
 // @access  Private
 exports.updateTransaction = async (req, res, next) => {
   try {
-    let transaction = await Transaction.findById(req.params.transactionId);
-
+    let transaction = await Transaction.findById(req.params.id);
+    // console.log(req.params.id);
     //check transaction
     if (!transaction) {
       return res.status(404).json({
         success: false,
-        message: `No transaction with the id of ${req.params.transactionId}`,
+        message: `No transaction with the id of ${req.params.id}`,
       });
     }
 
@@ -22,7 +22,7 @@ exports.updateTransaction = async (req, res, next) => {
     if (transaction.status === "COMPLETE" || transaction.status === "CANCELED") {
       return res.status(404).json({
         success: false,
-        message: `Transaction with the id of ${req.params.transactionId}'s status is not available to update`,
+        message: `Transaction with the id of ${req.params.id}'s status is not available to update [Status: COMPLETE, Status: CANCELED]`,
       });
     }
 
@@ -35,7 +35,7 @@ exports.updateTransaction = async (req, res, next) => {
       if (transaction.status !== "PENDING") {
         return res.status(404).json({
           success: false,
-          message: `Transaction with the id of ${req.params.transactionId}'s status is not available to check`,
+          message: `Transaction with the id of ${req.params.id}'s status is not available to check [Status: REJECTED]`,
         });
       }
 
@@ -54,7 +54,7 @@ exports.updateTransaction = async (req, res, next) => {
       if (transaction.status !== "REJECTED") {
           return res.status(401).json({
             success: false,
-            message: `Cannot update transaction with the id of ${req.params.transactionId}`,
+            message: `Cannot update transaction with the id of ${req.params.id}'s status is not available to check [Status: PENDING]`,
           });
         }
       }

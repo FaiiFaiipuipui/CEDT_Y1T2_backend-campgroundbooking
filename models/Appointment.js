@@ -29,8 +29,8 @@ AppointmentSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`transaction which has appointmentID: ${this._id}, status: CANCEL`);
-    await this.model("Transaction").updateMany({appointment: this._id},{status: "CANCEL"});
+    console.log(`transaction which has appointmentID: ${this._id}, status: CANCELED`);
+    await this.model("Transaction").updateMany({appointment: this._id},{status: "CANCELED"});
     next();
   }
 );
