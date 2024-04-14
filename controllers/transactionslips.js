@@ -12,9 +12,9 @@ exports.getTransactionSlips = async (req, res, next) => {
         query = TransactionSlip.find({
           payment_id: req.params.transactionId,
         });
-      } else
+      } else{
         query = TransactionSlip.find();
-    
+      }
 
     try {
       const transactionslips = await query;

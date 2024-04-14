@@ -7,7 +7,7 @@ const TransactionSlip = require("../models/TransactionSlip");
 exports.updateTransaction = async (req, res, next) => {
   try {
     let transaction = await Transaction.findById(req.params.id);
-    // console.log(req.params.id);
+    //console.log(req.params.id);
     //check transaction
     if (!transaction) {
       return res.status(404).json({
@@ -16,7 +16,7 @@ exports.updateTransaction = async (req, res, next) => {
       });
     }
 
-    // Status : [PENDING, COMPLETE, REJECTED, CANCELED]
+    //Status : [PENDING, COMPLETE, REJECTED, CANCELED]
 
     //check status transaction is not COMPLETE and CANCELED
     if (
@@ -32,7 +32,7 @@ exports.updateTransaction = async (req, res, next) => {
     //Check User or Admin
 
     if (req.user.role === "admin") {
-      // ADMIN CASE: Admin can update when transaction was PENDING after user upload slip
+      //ADMIN CASE: Admin can update when transaction was PENDING after user upload slip
 
       //Check status of transaction
       if (transaction.status !== "PENDING") {
@@ -41,14 +41,25 @@ exports.updateTransaction = async (req, res, next) => {
           message: `Transaction with the id of ${req.params.id}'s status is not available to check, User doesn't update a transaction slip [Status: REJECTED]`,
         });
       }
-    } else {
-      // USER CASE: When admin rejected transaction, USER will see transaction's status: PENDING
 
-      // Make sure user is the transaction owner
+      /* Check Status that will be updated */
       if (
-        transaction.user.toString() !== req.user.id &&
-        req.user.role === "user"
+        req.body.status !== "PENDING" &&
+        req.body.status !== "COMPLETE" &&
+        req.body.status !== "REJECTED" &&
+        req.body.status !== "CANCELED"
       ) {
+        return res.status(401).json({
+          success: false,
+          message: `Cannot update transaction with the id of ${req.params.id}'s status is not invalid, [Status: ${transaction.status}]`,
+        });
+      }
+
+    } else if (req.user.role === "user") {
+      //USER CASE: When admin rejected transaction, USER will see transaction's status: PENDING
+
+      //Make sure user is the transaction owner
+      if (transaction.user.toString() !== req.user.id) {
         return res.status(401).json({
           success: false,
           message: `User ${req.user.id} is not authorized to update this transaction`,
@@ -70,22 +81,6 @@ exports.updateTransaction = async (req, res, next) => {
       runValidators: true,
     });
 
-    if (
-      transaction.status !== "PENDING" &&
-      transaction.status !== "COMPLETE" &&
-      transaction.status !== "REJECTED" &&
-      transaction.status !== "CANCELED"
-    ) {
-      // Revert the changes made to the transaction document
-      await Transaction.findByIdAndUpdate(req.params.id, { $set: req.body }); // Rollback to the previous state
-
-      return res.status(401).json({
-        success: false,
-        message: `Cannot update transaction with the id of ${req.params.id}'s status is not invalid, [Status: ${transaction.status}]`,
-      });
-    }
-
-    //If NEW STATUS is COMPLETE
     if (transaction.status === "COMPLETE") {
       const transactionSlipId =
         transaction.submitted_slip_images[

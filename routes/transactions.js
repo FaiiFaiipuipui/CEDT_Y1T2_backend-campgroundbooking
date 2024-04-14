@@ -1,5 +1,5 @@
 const express = require("express");
-const {updateTransaction} = require("../controllers/transaction");
+const {updateTransaction} = require("../controllers/transactions");
 
 const transactionSlipRouter = require("./transactionslips");
 
