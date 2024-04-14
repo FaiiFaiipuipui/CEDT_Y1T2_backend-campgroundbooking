@@ -48,7 +48,7 @@ const CampgroundSchema = new mongoose.Schema(
     promptpayTel: {
       type: String,
       required: [true, "Please add a promptpay's telephone"],
-      match: [/^[0-9]+$/, "Please only input numbers"],
+      match: [/^[0-9]+$/, "Please input only numbers"],
       minlength: [10, "Promptpay's telephone can not be less than 10 numbers"],
       maxlength: [10, "Promptpay's telephone can not be more than 10 numbers"],
     },
