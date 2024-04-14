@@ -46,14 +46,16 @@ exports.getTransactionSlips = async (req, res, next) => {
       }
 
       const transaction = await Transaction.findById(transactionSlip.payment_id);
+      console.log("Transaction User id: " + transaction.user.toString());
+      console.log("Request User id: " + req.user._id);
+
       //Check transaction slip owner
-      if(req.user.role !== 'admin' && transaction.user.toString == req.user.id) {
+      if(transaction.user.toString() !== req.user.id && req.user.role !== 'admin'){
         return res.status(401).json({
-          success: false,
-          message: `User ${req.user.id} is not authorized to get this transaction slip id: ${req.params.id}`,
+          success:false,
+          message:`User ${req.user.id} is not authorized to get this transaction`
         });
       }
-
       res.status(200).json({ success: true, data: transactionSlip });
     } catch (error) {
       console.log(error);
@@ -82,15 +84,12 @@ exports.addTransactionSlip = async (req, res, next) => {
         const slips = transaction.submitted_slip_images.length;
         const status = transaction.status;
         
-        // console.log("Slips length: ", slips);
-        // console.log("Status: ",status);
-
         //slips = 0 : can create
         //slips > 0 : can create, if transaction's status is REJECTED
         if(slips > 0 && status !== "REJECTED"){
           return res.status(400).json({
               success: false,
-              message: `Cannot create a transaction slip for transactionId: ${req.params.transactionId}`
+              message: `Cannot create a transaction slip for transactionId: ${req.params.transactionId}, waiting admin checking a transaction slip before`
           });
         }
 

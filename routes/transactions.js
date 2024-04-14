@@ -22,6 +22,6 @@ router.route("/")
 
 router.route("/:id")
     .get(protect, authorize("admin", "user"), getTransaction)
-    .put(protect, authorize("admin", "user"), updateTransaction);
+    .put(protect, authorize("admin"), updateTransaction);
 
 module.exports = router;

@@ -66,7 +66,7 @@ const swaggerOptions = {
     info: {
       title: "CBS API",
       version: "1.0.0",
-      description: "Campgound Booking System of Team Kae Leaw",
+      description: "Campground Booking System of Team Kae Leaw",
     },
     server: [
       {
@@ -76,7 +76,7 @@ const swaggerOptions = {
   },
 };
 
-// Handle unhandles promis rejections
+// Handle unhandles promise rejections
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`);
   // Close server & exit process
