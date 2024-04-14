@@ -43,6 +43,11 @@ const CampgroundSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Decimal128,
       required: [true, "Please add a price"],
     },
+
+    promptpayTel: {
+      type: string,
+      required: [true, "Please add a promptpay's telephone"],
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
 );
