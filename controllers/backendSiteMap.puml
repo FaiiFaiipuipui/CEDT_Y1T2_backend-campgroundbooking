@@ -1,0 +1,70 @@
+@startuml backend site map
+
+hide empty description
+[*] --> api
+
+api --> v1
+
+v1 --> campgrounds : ROUTER campgrounds
+v1 --> auth : ROUTER auth
+v1 --> appointments : ROUTER appointments
+v1 --> transactions : ROUTER transactions
+
+/' campground '/
+campgrounds --> getCampgrounds : GET
+campgrounds --> createCampground : POST
+
+state ":id" as cgID
+campgrounds --> cgID
+cgID --> getCampground : GET
+cgID --> updateCampground : PUT
+cgID --> deleteCampground : DELETE
+
+state ":campgroundId" as campgroundID
+campgrounds --> campgroundID
+state "appointments" as CGappointments
+campgroundID --> CGappointments : ROUTER appointments
+CGappointments --> addAppointment : POST
+state "weather" as CGweather
+campgroundID --> CGweather : ROUTER weather
+CGweather --> getWrongRouteMessage : GET
+state "general" as WEATHERgeneral
+CGweather --> WEATHERgeneral
+WEATHERgeneral --> getWeather : GET
+state "pollution" as WEATHERpollution
+CGweather --> WEATHERpollution
+WEATHERpollution --> getPollution : GET 
+state "around" as CGaround
+campgroundID --> CGaround : ROUTER travelInfo
+CGaround --> getPlace : GET
+
+/' auth '/
+auth --> me
+me --> getMe : GET
+auth --> logout
+state "logout" as logoutFunc
+logout --> logoutFunc : GET
+auth --> register
+state "register" as registerFunc
+register --> registerFunc : POST 
+auth --> login
+state "login" as loginFunc
+login --> loginFunc : POST
+
+/' appointments '/
+appointments --> getAppointments : GET
+appointments --> addAppointment : POST ❌
+state ":id" as appointmentID
+appointments --> appointmentID
+appointmentID --> getAppointment : GET
+appointmentID --> updateAppointment : PUT
+appointmentID --> deleteAppointment : DELETE
+
+/' transactions '/
+transactions --> promptpayqr
+state ":appointmentID" as TRANSACTIONappointmentid
+transactions --> TRANSACTIONappointmentid
+TRANSACTIONappointmentid --> createTransaction : POST
+promptpayqr --> promptpayQR : POST
+
+@enduml
