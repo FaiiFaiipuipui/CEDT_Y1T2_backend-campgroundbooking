@@ -5,8 +5,7 @@ const TransactionSlip = require('../models/TransactionSlip');
 // @route   GET /api/v1/transactionslips
 // @access  Private
 exports.getTransactionSlips = async (req, res, next) => {
-    let queryTransactions;
-    let querySLips
+    let query;
     
     // Admin can see all
       if (req.params.transactionId) {
