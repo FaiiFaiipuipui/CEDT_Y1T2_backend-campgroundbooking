@@ -1,6 +1,7 @@
 const Appointment = require("../models/Appointment");
 const Campground = require("../models/Campground");
-const Transaction = require('../models/Transaction');
+const Transaction = require("../models/Transaction");
+const TransactionSlip = require("../models/TransactionSlip");
 const { createPromptPayQR } = require("../utils/createPromptpayQR")
 
 /**
@@ -204,8 +205,6 @@ exports.getTransaction = async (req, res, next) => {
     });
   }
 };
-const Transaction = require("../models/Transaction");
-const TransactionSlip = require("../models/TransactionSlip");
 
 // @desc    Update transaction
 // @route   PUT /api/v1/transactions/:id
