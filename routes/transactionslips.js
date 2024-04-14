@@ -6,11 +6,11 @@ const { protect, authorize } = require("../middleware/auth");
 
 router
     .route("/")
-    .get(protect, getTransactionSlips)
+    .get(protect, authorize("admin"), getTransactionSlips)
     .post(protect, authorize("user"), addTransactionSlip);
 
 router
     .route("/:id")
-    .get(protect, getTransactionSlip);
+    .get(protect, authorize("admin", "user"), getTransactionSlip);
 
 module.exports = router;

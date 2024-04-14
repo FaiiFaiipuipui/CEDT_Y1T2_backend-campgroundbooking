@@ -3,21 +3,20 @@ const TransactionSlip = require('../models/TransactionSlip');
 
 // @desc    Get all transactionSlips
 // @route   GET /api/v1/transactionslips
-// @access  Public
+// @access  Private
 exports.getTransactionSlips = async (req, res, next) => {
-    let query;
-    //General users can see only their appointments!
-    if (req.user.role !== "admin") {
-      query = TransactionSlip.find({ user: req.user.id });
-    } else {
-      // If you are an admin, you can see all!
+    let queryTransactions;
+    let querySLips
+    
+    // Admin can see all
       if (req.params.transactionId) {
         query = TransactionSlip.find({
           payment_id: req.params.transactionId,
         });
       } else
         query = TransactionSlip.find();
-    }
+    
+
     try {
       const transactionslips = await query;
       res.status(200).json({
@@ -35,7 +34,7 @@ exports.getTransactionSlips = async (req, res, next) => {
   
   // @desc    Get single transactionSlip
   // @route   GET /api/v1/transactionslips/:id
-  // @access  Public
+  // @access  Private
   exports.getTransactionSlip = async (req, res, next) => {
     try {
       const transactionSlip = await TransactionSlip.findById(req.params.id);
@@ -44,6 +43,15 @@ exports.getTransactionSlips = async (req, res, next) => {
         return res.status(404).json({
           success: false,
           message: `No transaction slip with the id of ${req.params.id}`,
+        });
+      }
+
+      const transaction = await Transaction.findById(transactionSlip.payment_id);
+      //Check transaction slip owner
+      if(req.user.role !== 'admin' && transaction.user.toString == req.user.id) {
+        return res.status(401).json({
+          success: false,
+          message: `User ${req.user.id} is not authorized to get this transaction slip id: ${req.params.id}`,
         });
       }
 
@@ -92,7 +100,7 @@ exports.addTransactionSlip = async (req, res, next) => {
         //after created slip, add slip to transaction
         transaction.submitted_slip_images.push(transactionSlip._id);
         transaction.status = "PENDING";
-        transaction.save();
+        await transaction.save();
 
         res.status(201).json({
             success: true,

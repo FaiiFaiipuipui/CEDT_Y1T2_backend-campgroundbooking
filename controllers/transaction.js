@@ -19,10 +19,13 @@ exports.updateTransaction = async (req, res, next) => {
     // Status : [PENDING, COMPLETE, REJECTED, CANCELED]
 
     //check status transaction is not COMPLETE and CANCELED
-    if (transaction.status === "COMPLETE" || transaction.status === "CANCELED") {
+    if (
+      transaction.status === "COMPLETE" ||
+      transaction.status === "CANCELED"
+    ) {
       return res.status(404).json({
         success: false,
-        message: `Transaction with the id of ${req.params.id}'s status is not available to update [Status: COMPLETE, Status: CANCELED]`,
+        message: `Transaction with the id of ${req.params.id}'s status is not available to update [Transaction's Status: ${transaction.status}]`,
       });
     }
 
@@ -35,42 +38,64 @@ exports.updateTransaction = async (req, res, next) => {
       if (transaction.status !== "PENDING") {
         return res.status(404).json({
           success: false,
-          message: `Transaction with the id of ${req.params.id}'s status is not available to check [Status: REJECTED]`,
+          message: `Transaction with the id of ${req.params.id}'s status is not available to check, User doesn't update a transaction slip [Status: REJECTED]`,
         });
       }
-
     } else {
-      // USER CASE: When admin rejected transaction, USER will see transaction's status: PENDING 
-   
+      // USER CASE: When admin rejected transaction, USER will see transaction's status: PENDING
+
       // Make sure user is the transaction owner
-      if (transaction.user.toString() !== req.user.id &&req.user.role !== "admin") {
+      if (
+        transaction.user.toString() !== req.user.id &&
+        req.user.role === "user"
+      ) {
         return res.status(401).json({
           success: false,
           message: `User ${req.user.id} is not authorized to update this transaction`,
         });
-      } 
-        
+      }
+
       //Check status of transaction
       if (transaction.status !== "REJECTED") {
-          return res.status(401).json({
-            success: false,
-            message: `Cannot update transaction with the id of ${req.params.id}'s status is not available to check [Status: PENDING]`,
-          });
-        }
+        return res.status(401).json({
+          success: false,
+          message: `Cannot update transaction with the id of ${req.params.id}'s status is not available to upload new slip, Waiting for admin check transaction slip [Status: PENDING]`,
+        });
       }
-    
+    }
+
     //Update value of transaction [Admin: update status, User: update slip]
     transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
+    if (
+      transaction.status !== "PENDING" &&
+      transaction.status !== "COMPLETE" &&
+      transaction.status !== "REJECTED" &&
+      transaction.status !== "CANCELED"
+    ) {
+      // Revert the changes made to the transaction document
+      await Transaction.findByIdAndUpdate(req.params.id, { $set: req.body }); // Rollback to the previous state
+
+      return res.status(401).json({
+        success: false,
+        message: `Cannot update transaction with the id of ${req.params.id}'s status is not invalid, [Status: ${transaction.status}]`,
+      });
+    }
+
     //If NEW STATUS is COMPLETE
-    if(transaction.status === "COMPLETE") {
-      const transactionSlipId = transaction.submitted_slip_images[transaction.submitted_slip_images.length-1]
+    if (transaction.status === "COMPLETE") {
+      const transactionSlipId =
+        transaction.submitted_slip_images[
+          transaction.submitted_slip_images.length - 1
+        ];
       const transactionSlip = await TransactionSlip.findById(transactionSlipId);
-      transaction.successful_payment_date = transactionSlip.submit_time;
-      transaction.successful_payment_slip_image = transactionSlipId;
+      transaction.findByIdAndUpdate(req.params.id, {
+        successful_payment_date: transactionSlip.submit_time,
+        successful_payment_slip_image: transactionSlipId,
+      });
     }
 
     res.status(200).json({
