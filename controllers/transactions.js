@@ -23,16 +23,6 @@ exports.getTransactions = async (req, res, next) => {
 
   query = Transaction.find(JSON.parse(queryStr));
   if (req.user.role !== "admin") {
-    if(req.params.campgroundId){
-      console.log(req.params.campgroundId);
-      query = query.find({campground: req.params.campgroundId, user : req.user.id}).populate({
-        path: "campground",
-        select: "name",
-      }).populate({
-        path: "user",
-        select: "name",
-      });
-    }else{
       query = query.find({user : req.user.id}).populate({
         path: "campground",
         select: "name",
@@ -40,20 +30,7 @@ exports.getTransactions = async (req, res, next) => {
         path: "user",
         select: "name",
       });
-  }
   } else {
-    if (req.params.campgroundId) {
-      console.log(req.params.campgroundId);
-      query = query.find({
-        campground: req.params.campgroundId,
-      }).populate({
-        path: "campground",
-        select: "name",
-      }).populate({
-        path: "user",
-        select: "name",
-      });
-    } else {
       query = query.find().populate({
         path: "campground",
         select: "name",
@@ -61,7 +38,6 @@ exports.getTransactions = async (req, res, next) => {
         path: "user",
         select: "name",
       });
-    }
   }
 
   if (req.query.select) {
@@ -143,8 +119,6 @@ exports.getTransaction = async (req, res, next) => {
     }
 
     if(transaction.user._id.toString() !== req.user.id && req.user.role !== 'admin'){
-      console.log("1 : " + transaction.user.toString())
-      console.log("2 : " + req.user.id)
       return res.status(401).json({
         success:false,
         message:`User ${req.user.id} is not authorized to get this transaction`

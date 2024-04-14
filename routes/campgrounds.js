@@ -8,7 +8,6 @@ const {
 } = require("../controllers/campgrounds");
 
 const appointmentRouter = require('./appointments');
-const transactionRouter = require('./transactions');
 const weatherRouter = require('./weathers');
 const travelInfoRouter = require('./travelInfo');
 
@@ -17,7 +16,6 @@ const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 router.use('/:campgroundId/appointments/', appointmentRouter);
-router.use('/:campgroundId/transactions/', transactionRouter);
 router.use('/:campgroundId/weather/', weatherRouter);
 router.use('/:campgroundId/around/', travelInfoRouter);
 
