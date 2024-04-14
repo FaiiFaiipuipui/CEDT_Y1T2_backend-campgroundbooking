@@ -13,7 +13,7 @@ connectDB();
 const campgrounds = require("./routes/campgrounds");
 const auth = require("./routes/auth");
 const appointment = require("./routes/appointments");
-const transaction = require("./routes/transactions");
+const transaction = require('./routes/transactions');
 
 const app = express();
 
