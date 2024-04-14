@@ -44,9 +44,13 @@ const CampgroundSchema = new mongoose.Schema(
       required: [true, "Please add a price"],
     },
 
+    //For example: 0819998888 constraint: regex of number only, length must be 10
     promptpayTel: {
-      type: string,
+      type: String,
       required: [true, "Please add a promptpay's telephone"],
+      match: [/^[0-9]+$/, "Please only input numbers"],
+      minlength: [10, "Promptpay's telephone can not be less than 10 numbers"],
+      maxlength: [10, "Promptpay's telephone can not be more than 10 numbers"],
     },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
