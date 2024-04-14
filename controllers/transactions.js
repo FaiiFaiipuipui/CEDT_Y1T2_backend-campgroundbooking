@@ -21,11 +21,56 @@ exports.getTransactions = async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  // Select
   query = Transaction.find(JSON.parse(queryStr));
+  if (req.user.role !== "admin") {
+    if(req.params.campgroundId){
+      console.log(req.params.campgroundId);
+      query = query.find({campground: req.params.campgroundId, user : req.user.id}).populate({
+        path: "campground",
+        select: "name",
+      }).populate({
+        path: "user",
+        select: "name",
+      });
+    }else{
+      query = query.find({user : req.user.id}).populate({
+        path: "campground",
+        select: "name",
+      }).populate({
+        path: "user",
+        select: "name",
+      });
+  }
+  } else {
+    if (req.params.campgroundId) {
+      console.log(req.params.campgroundId);
+      query = query.find({
+        campground: req.params.campgroundId,
+      }).populate({
+        path: "campground",
+        select: "name",
+      }).populate({
+        path: "user",
+        select: "name",
+      });
+    } else {
+      query = query.find().populate({
+        path: "campground",
+        select: "name",
+      }).populate({
+        path: "user",
+        select: "name",
+      });
+    }
+  }
+
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+  }
 
   // Sort
-  if (req.query.select) {
+  if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
     query = query.sort(sortBy);
   } else {
@@ -41,31 +86,10 @@ exports.getTransactions = async (req, res, next) => {
 
   query = query.skip(startIndex).limit(limit);
 
-  if (req.user.role !== "admin") {
-    query = Transaction.find({ user: req.user.id }).populate({
-      path: "appointment",
-      select: "user campground"
-    });
-  } else {
-    if (req.params.transactionId) {
-      console.log(req.params.transactionId);
-      query = query.find({
-        campground: req.params.transactionId,
-    }).populate({
-      path: "appointment",
-      select: "user campground",
-    });
-    } else {
-      query = query.find().populate({
-        path: "appointment",
-        select: "user campground",
-      });
-    }
-  }
-
   try {
     const transactions = await query;
 
+    // Pagination result
     const pagination = {};
 
     if (endIndex < total) {
@@ -93,7 +117,7 @@ exports.getTransactions = async (req, res, next) => {
     console.log(err.stack);
     res.status(500).json({
       success: false,
-      message: "Cannot find any transaction",
+      message: "Cannot find any Transaction",
     });
   }
 };
@@ -104,8 +128,11 @@ exports.getTransactions = async (req, res, next) => {
 exports.getTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findById(req.params.id).populate({
-      path: "appointment",
-      select: "user campground",
+      path: "campground",
+      select: "name",
+    }).populate({
+      path: "user",
+      select: "name",
     });
 
     if (!transaction) {
@@ -114,17 +141,16 @@ exports.getTransaction = async (req, res, next) => {
         message: `No transaction with the id of ${req.params.id}`
       });
     }
-  
-    if (
-      transaction.user.toString() !== req.user.id &&
-      req.user.role !== "admin"
-    ) {
+
+    if(transaction.user._id.toString() !== req.user.id && req.user.role !== 'admin'){
+      console.log("1 : " + transaction.user.toString())
+      console.log("2 : " + req.user.id)
       return res.status(401).json({
-        success: false,
-        message: `User ${req.user.id} is not authorized to access this transaction`,
+        success:false,
+        message:`User ${req.user.id} is not authorized to get this transaction`
       });
     }
-    
+  
     res.status(200).json({
       success: true,
       data: transaction,
@@ -132,7 +158,7 @@ exports.getTransaction = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Cannot find transaction"
+      message: "Cannot find Transaction"
     });
   }
 };

@@ -9,10 +9,10 @@ const { protect, authorize } = require('../middleware/auth');
 
 router
     .route('/')
-    .get(protect, getTransactions);
+    .get(protect, authorize("admin", "user"), getTransactions);
 
 router
     .route('/:id')
-    .get(protect, getTransaction);
+    .get(protect, authorize("admin", "user"), getTransaction);
 
 module.exports = router;
