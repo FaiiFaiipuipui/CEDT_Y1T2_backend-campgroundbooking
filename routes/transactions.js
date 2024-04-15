@@ -18,10 +18,10 @@ router
   .post(protect, authorize("admin", "user"), createPromptpayQR);
 
 router.route("/")
-    .get(protect, authorize("admin", "user"), getTransactions);
+  .get(protect, authorize("admin", "user"), getTransactions);
 
 router.route("/:id")
-    .get(protect, authorize("admin", "user"), getTransaction)
-    .put(protect, authorize("admin"), updateTransaction);
+  .get(protect, authorize("admin", "user"), getTransaction)
+  .put(protect, authorize("admin"), updateTransaction);
 
 module.exports = router;

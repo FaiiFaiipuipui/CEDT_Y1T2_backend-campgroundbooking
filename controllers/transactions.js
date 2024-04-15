@@ -233,7 +233,7 @@ exports.getTransaction = async (req, res, next) => {
 exports.updateTransaction = async (req, res, next) => {
   try {
     let transaction = await Transaction.findById(req.params.id);
-    
+
     //check transaction
     if (!transaction) {
       return res.status(404).json({
