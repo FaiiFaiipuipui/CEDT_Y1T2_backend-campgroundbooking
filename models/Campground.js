@@ -43,6 +43,13 @@ const CampgroundSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.Decimal128,
       required: [true, "Please add a price"],
     },
+
+    //For example: 0819998888 constraint: regex of number only, length must be 10
+    promptpayTel: {
+      type: String,
+      required: [true, "Please add a promptpay's telephone"],
+      match: [/^[0-9]{10}$/, "Please input only numbers and length must be 10"],
+    },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true }, id: false }
 );
