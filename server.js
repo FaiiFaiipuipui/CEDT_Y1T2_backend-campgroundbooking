@@ -66,7 +66,7 @@ const swaggerOptions = {
     info: {
       title: "CBS API",
       version: "1.0.0",
-      description: "Campground Booking System of Team Kae Leaw",
+      description: "Campground Booking System of Capybara",
     },
     server: [
       {
