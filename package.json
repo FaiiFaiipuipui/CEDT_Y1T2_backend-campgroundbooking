@@ -26,6 +26,7 @@
     "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.0",
+    "supertest": "^6.3.4",
     "time-stamps": "^1.0.0"
   },
   "devDependencies": {
