@@ -43,7 +43,7 @@ const TransactionSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    
+
     appointment: {
       type: mongoose.Schema.ObjectId,
       ref: "Appointment",

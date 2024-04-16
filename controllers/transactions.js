@@ -1,7 +1,8 @@
 const Appointment = require("../models/Appointment");
 const Campground = require("../models/Campground");
-const Transaction = require('../models/Transaction');
-const { createPromptPayQR } = require("../utils/createPromptpayQR")
+const Transaction = require("../models/Transaction");
+const TransactionSlip = require("../models/TransactionSlip");
+const { createPromptPayQR } = require("../utils/createPromptpayQR");
 
 /**
  * @desc create promptpayQR with req body
@@ -14,16 +15,20 @@ exports.createPromptpayQR = async (req, res, next) => {
     console.log(req.body);
     const data = req.body;
 
-    if (!data.promptpayID || !data.appointmentID ) {
-      const error = new Error("promptpayID or appointmentID is missing in the request body");
+    if (!data.promptpayID || !data.appointmentID) {
+      const error = new Error(
+        "promptpayID or appointmentID is missing in the request body"
+      );
       error.code = 400;
       throw error;
     }
 
     const appointment = await Appointment.findById(data.appointmentID);
 
-    if(!appointment) {
-      const error = new Error(`No appointment with the id of ${req.params.appointmentId}`);
+    if (!appointment) {
+      const error = new Error(
+        `No appointment with the id of ${req.params.appointmentId}`
+      );
       error.code = 404;
       throw error;
     }
@@ -31,33 +36,40 @@ exports.createPromptpayQR = async (req, res, next) => {
     const campground = await Campground.findById(appointment.campground);
 
     if (!campground) {
-      const error = new Error(`No campground with the ID of ${appointment.campground}`);
+      const error = new Error(
+        `No campground with the ID of ${appointment.campground}`
+      );
       error.code = 404;
       throw error;
     }
 
-    console.dir(campground.price, {showHidden: false, depth: null, colors: true});
+    console.dir(campground.price, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    });
     if (!campground.price) {
-      const error = new Error(`campground with the ID of ${appointment.campground} does not exist price attribute`)
+      const error = new Error(
+        `campground with the ID of ${appointment.campground} does not exist price attribute`
+      );
       error.code = 500;
-      throw error
+      throw error;
     }
 
     let returnData;
-    await createPromptPayQR(data.promptpayID, campground.price)
-    .then((data) => {
+    await createPromptPayQR(data.promptpayID, campground.price).then((data) => {
       returnData = data;
-      if (returnData === 'error') {
+      if (returnData === "error") {
         const error = new Error("QR code Creation Function failed");
         error.code = 500;
         throw error;
       }
-    })
+    });
 
     res.status(200).json({
       success: true,
-      data: returnData
-    })
+      data: returnData,
+    });
   } catch (err) {
     console.log(err);
     res.status(err.code || 500).json({
@@ -65,8 +77,7 @@ exports.createPromptpayQR = async (req, res, next) => {
       message: err.message,
     });
   }
-}
-
+};
 
 // @desc:    Get all transactions
 // @route:   GET /api/v1/transactions
@@ -75,7 +86,7 @@ exports.getTransactions = async (req, res, next) => {
   let query;
   console.log(req);
 
-  const reqQuery = {...req.query};
+  const reqQuery = { ...req.query };
   const removeFields = ["select", "sort", "page", "limit"];
 
   // Loop over remove fields and delete from reqQuery
@@ -91,18 +102,24 @@ exports.getTransactions = async (req, res, next) => {
 
   query = Transaction.find(JSON.parse(queryStr));
   if (req.user.role !== "admin") {
-      query = query.find({user : req.user.id}).populate({
+    query = query
+      .find({ user: req.user.id })
+      .populate({
         path: "campground",
         select: "name",
-      }).populate({
+      })
+      .populate({
         path: "user",
         select: "name",
       });
   } else {
-      query = query.find().populate({
+    query = query
+      .find()
+      .populate({
         path: "campground",
         select: "name",
-      }).populate({
+      })
+      .populate({
         path: "user",
         select: "name",
       });
@@ -156,7 +173,7 @@ exports.getTransactions = async (req, res, next) => {
       pagination,
       data: transactions,
     });
-    console.log('success', transactions.length);
+    console.log("success", transactions.length);
   } catch (err) {
     console.log(err.stack);
     res.status(500).json({
@@ -171,28 +188,33 @@ exports.getTransactions = async (req, res, next) => {
 // @access:  Private
 exports.getTransaction = async (req, res, next) => {
   try {
-    const transaction = await Transaction.findById(req.params.id).populate({
-      path: "campground",
-      select: "name",
-    }).populate({
-      path: "user",
-      select: "name",
-    });
+    const transaction = await Transaction.findById(req.params.id)
+      .populate({
+        path: "campground",
+        select: "name",
+      })
+      .populate({
+        path: "user",
+        select: "name",
+      });
 
     if (!transaction) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: `No transaction with the id of ${req.params.id}`
+        message: `No transaction with the id of ${req.params.id}`,
       });
     }
 
-    if(transaction.user._id.toString() !== req.user.id && req.user.role !== 'admin'){
+    if (
+      transaction.user._id.toString() !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
       return res.status(401).json({
-        success:false,
-        message:`User ${req.user.id} is not authorized to get this transaction`
+        success: false,
+        message: `User ${req.user.id} is not authorized to get this transaction`,
       });
     }
-  
+
     res.status(200).json({
       success: true,
       data: transaction,
@@ -200,7 +222,86 @@ exports.getTransaction = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Cannot find Transaction"
+      message: "Cannot find Transaction",
     });
+  }
+};
+
+// @desc    Update transaction
+// @route   PUT /api/v1/transactions/:id
+// @access  Private
+exports.updateTransaction = async (req, res, next) => {
+  try {
+    let transaction = await Transaction.findById(req.params.id);
+
+    //check transaction
+    if (!transaction) {
+      return res.status(404).json({
+        success: false,
+        message: `No transaction with the id of ${req.params.id}`,
+      });
+    }
+
+    //Status : [PENDING, COMPLETE, REJECTED, CANCELED]
+
+    //check status transaction is not COMPLETE and CANCELED
+    if (
+      transaction.status === "COMPLETE" ||
+      transaction.status === "CANCELED"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: `Transaction with the id of ${req.params.id}'s status is not available to update [Transaction's Status: ${transaction.status}]`,
+      });
+    }
+
+    //ADMIN : Admin can update when transaction was PENDING after user upload slip
+
+    //Check status of transaction
+    if (transaction.status !== "PENDING") {
+      return res.status(404).json({
+        success: false,
+        message: `Transaction with the id of ${req.params.id}'s status is not available to check, User doesn't update a transaction slip [Status: REJECTED]`,
+      });
+    }
+
+    /* Check Status that will be updated */
+    if (
+      req.body.status !== "PENDING" &&
+      req.body.status !== "COMPLETE" &&
+      req.body.status !== "REJECTED" &&
+      req.body.status !== "CANCELED"
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: `Cannot update transaction with the id of ${req.params.id}'s status is not a valid format, [New Status: ${req.body.status}]`,
+      });
+    }
+
+    //Update value of transaction [Admin: update status]
+    transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (transaction.status === "COMPLETE") {
+      const transactionSlipId = transaction.submitted_slip_images[transaction.submitted_slip_images.length - 1];
+      const transactionSlip = await TransactionSlip.findById(transactionSlipId);
+      transaction.set({
+        successful_payment_date: transactionSlip.submit_time,
+        successful_payment_slip_image: transactionSlipId,
+      });
+      transaction = await transaction.save();
+    }
+
+    res.status(200).json({
+      success: true,
+      data: transaction,
+    });
+  } catch (err) {
+    console.log(err.stack);
+    return res
+      .status(500)
+      .json({ success: false, message: "Cannot update transaction" });
   }
 };
