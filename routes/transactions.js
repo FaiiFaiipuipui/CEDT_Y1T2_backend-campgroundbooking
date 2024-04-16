@@ -3,6 +3,7 @@ const {
   createPromptpayQR,
   getTransactions,
   getTransaction,
+  addTransaction,
   updateTransaction,
 } = require("../controllers/transactions");
 
@@ -23,5 +24,9 @@ router.route("/")
 router.route("/:id")
   .get(protect, authorize("admin", "user"), getTransaction)
   .put(protect, authorize("admin"), updateTransaction);
+
+router
+  .route('/:appointmentId')
+  .post(protect, authorize('admin', 'user'), addTransaction);
 
 module.exports = router;
