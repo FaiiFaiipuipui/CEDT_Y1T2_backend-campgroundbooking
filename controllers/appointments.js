@@ -10,7 +10,7 @@ exports.getAppointments = async (req, res, next) => {
   if (req.user.role !== "admin") {
     query = Appointment.find({ user: req.user.id }).populate({
       path: "campground",
-      select: "name province tel",
+      select: "name province tel price promptpayTel",
     });
   } else {
     // If you are an admin, you can see all!
@@ -20,12 +20,12 @@ exports.getAppointments = async (req, res, next) => {
         campground: req.params.campgroundId,
       }).populate({
         path: "campground",
-        select: "name province tel",
+        select: "name province tel price promptpayTel",
       });
     } else
       query = Appointment.find().populate({
         path: "campground",
-        select: "name province tel",
+        select: "name province tel price promptpayTel",
       });
   }
   try {
@@ -50,7 +50,7 @@ exports.getAppointment = async (req, res, next) => {
   try {
     const appointment = await Appointment.findById(req.params.id).populate({
       path: "campground",
-      select: "name province tel",
+      select: "name province tel price promptpayTel",
     });
 
     if (!appointment) {
