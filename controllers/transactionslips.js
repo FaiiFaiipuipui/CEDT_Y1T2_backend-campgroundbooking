@@ -111,7 +111,7 @@ exports.addTransactionSlip = async (req, res, next) => {
     console.error(err.stack);
     return res.status(500).json({
       success: false,
-      message: `Cannot create a transaction slip for transactionId: ${req.params.transactionId}`,
+      message: `Cannot create a transaction slip for transactionId`
     });
   }
 };
