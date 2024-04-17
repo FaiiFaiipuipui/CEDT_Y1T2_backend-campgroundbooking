@@ -106,7 +106,7 @@ exports.getTransactions = async (req, res, next) => {
       .find({ user: req.user.id })
       .populate({
         path: "campground",
-        select: "name",
+        select: "name price",
       })
       .populate({
         path: "user",
@@ -117,7 +117,7 @@ exports.getTransactions = async (req, res, next) => {
       .find()
       .populate({
         path: "campground",
-        select: "name",
+        select: "name price",
       })
       .populate({
         path: "user",
@@ -191,7 +191,7 @@ exports.getTransaction = async (req, res, next) => {
     const transaction = await Transaction.findById(req.params.id)
       .populate({
         path: "campground",
-        select: "name",
+        select: "name price",
       })
       .populate({
         path: "user",
@@ -329,7 +329,10 @@ exports.updateTransaction = async (req, res, next) => {
     });
 
     if (transaction.status === "COMPLETE") {
-      const transactionSlipId = transaction.submitted_slip_images[transaction.submitted_slip_images.length - 1];
+      const transactionSlipId =
+        transaction.submitted_slip_images[
+          transaction.submitted_slip_images.length - 1
+        ];
       const transactionSlip = await TransactionSlip.findById(transactionSlipId);
       transaction.set({
         successful_payment_date: transactionSlip.submit_time,

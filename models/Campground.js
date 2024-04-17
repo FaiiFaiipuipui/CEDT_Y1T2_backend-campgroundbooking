@@ -66,7 +66,8 @@ CampgroundSchema.pre(
 );
 
 //Cascade delete announcements when a campground is deleted
-CampgroundSchema.pre("deleteOne",
+CampgroundSchema.pre(
+  "deleteOne",
   { document: true, query: false },
   async function (next) {
     console.log(`Announcement being removed from campground ${this._id}`);
@@ -83,8 +84,8 @@ CampgroundSchema.virtual("appointments", {
   justOne: false,
 });
 
-//Announcement populate with virtual
-CampgroundSchema.virtual("announcements",{
+// Announcement populate with virtual
+CampgroundSchema.virtual("announcements", {
   ref: "Announcement",
   localField: "_id",
   foreignField: "campground",
