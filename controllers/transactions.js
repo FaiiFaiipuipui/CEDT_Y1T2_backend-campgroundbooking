@@ -32,7 +32,7 @@ exports.createPromptpayQR = async (req, res, next) => {
 
     if (!appointment) {
       const error = new Error(
-        `No appointment with the id of ${req.params.appointmentId}`
+        `No appointment with the id of ${data.appointmentID}`
       );
       error.code = 404;
       throw error;
@@ -67,6 +67,7 @@ exports.createPromptpayQR = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: returnData,
+      campgroundPrice: appointment.campground.price.toString()
     });
   } catch (err) {
     console.log(err);
