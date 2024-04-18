@@ -233,7 +233,7 @@ exports.getTransaction = async (req, res, next) => {
 exports.addTransaction = async (req, res, next) => {
   try {
     req.body.appointment = req.params.appointmentId;
-
+    req.body.status = "PENDING";
     const appointment = await Appointment.findById(req.params.appointmentId);
 
     if (!appointment) {
