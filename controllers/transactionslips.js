@@ -1,5 +1,5 @@
-const Transaction = require('../models/Transaction');
-const TransactionSlip = require('../models/TransactionSlip');
+const Transaction = require("../models/Transaction");
+const TransactionSlip = require("../models/TransactionSlip");
 
 // @desc    Get all transactionSlips
 // @route   GET /api/v1/transactionslips
@@ -50,10 +50,13 @@ exports.getTransactionSlip = async (req, res, next) => {
     console.log("Request User id: " + req.user._id);
 
     //Check transaction slip owner
-    if (transaction.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (
+      transaction.user.toString() !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
       return res.status(401).json({
         success: false,
-        message: `User ${req.user.id} is not authorized to get this transaction`
+        message: `User ${req.user.id} is not authorized to get this transaction`,
       });
     }
     res.status(200).json({ success: true, data: transactionSlip });
@@ -77,7 +80,7 @@ exports.addTransactionSlip = async (req, res, next) => {
     if (!transaction) {
       return res.status(404).json({
         success: false,
-        message: `Cannot find transaction with id: ${req.params.transactionId}`
+        message: `Cannot find transaction with id: ${req.params.transactionId}`,
       });
     }
 
@@ -89,7 +92,7 @@ exports.addTransactionSlip = async (req, res, next) => {
     if (slips > 0 && status !== "REJECTED") {
       return res.status(400).json({
         success: false,
-        message: `Cannot create a transaction slip for transactionId: ${req.params.transactionId}, waiting admin checking a transaction slip before`
+        message: `Cannot create a transaction slip for transactionId: ${req.params.transactionId}, waiting admin checking a transaction slip before`,
       });
     }
 
@@ -102,10 +105,9 @@ exports.addTransactionSlip = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: transactionSlip
+      data: transactionSlip,
     });
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err.stack);
     return res.status(500).json({
       success: false,
