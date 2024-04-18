@@ -200,6 +200,10 @@ exports.getTransaction = async (req, res, next) => {
       });
     }
 
+     // Convert price from Decimal128 to number
+     let priceNumber = transaction.campground.price.toString();
+     console.log(priceNumber);
+
     // if (
     //   transaction.user._id.toString() !== req.user.id &&
     //   req.user.role !== "admin"
@@ -213,6 +217,7 @@ exports.getTransaction = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: transaction,
+      campgroundPrice: priceNumber,
     });
   } catch (err) {
     res.status(500).json({
