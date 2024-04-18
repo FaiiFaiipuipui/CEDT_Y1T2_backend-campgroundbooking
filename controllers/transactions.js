@@ -16,17 +16,17 @@ exports.createPromptpayQR = async (req, res, next) => {
     const data = req.body;
 
     if (!data.transactionId) {
-      const error = new Error(
-        "transactionId is missing in the request body"
-      );
+      const error = new Error("transactionId is missing in the request body");
       error.code = 400;
       throw error;
     }
 
-    const transaction = await Transaction.findById(data.transactionId).populate({
-      path: "campground",
-      select: "name price promptpayTel",
-    });
+    const transaction = await Transaction.findById(data.transactionId).populate(
+      {
+        path: "campground",
+        select: "name price promptpayTel",
+      }
+    );
 
     if (!transaction) {
       const error = new Error(
@@ -41,7 +41,6 @@ exports.createPromptpayQR = async (req, res, next) => {
     console.log(transaction.campground.price.toString());
     campgroundPrice = parseFloat(transaction.campground.price.toString());
 
-
     if (!campgroundPrice) {
       const error = new Error(
         `campground with the ID of ${transaction.campground} does not exist price attribute`
@@ -51,7 +50,10 @@ exports.createPromptpayQR = async (req, res, next) => {
     }
 
     let returnData;
-    await createPromptPayQR(transaction.campground.promptpayTel, campgroundPrice).then((data) => {
+    await createPromptPayQR(
+      transaction.campground.promptpayTel,
+      campgroundPrice
+    ).then((data) => {
       returnData = data;
       if (returnData === "error") {
         const error = new Error("QR code Creation Function failed");
@@ -63,7 +65,7 @@ exports.createPromptpayQR = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: returnData,
-      campgroundPrice: transaction.campground.price.toString()
+      campgroundPrice: transaction.campground.price.toString(),
     });
   } catch (err) {
     console.log(err);
@@ -200,10 +202,6 @@ exports.getTransaction = async (req, res, next) => {
       });
     }
 
-     // Convert price from Decimal128 to number
-     let priceNumber = transaction.campground.price.toString();
-     console.log(priceNumber);
-
     // if (
     //   transaction.user._id.toString() !== req.user.id &&
     //   req.user.role !== "admin"
@@ -217,7 +215,7 @@ exports.getTransaction = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: transaction,
-      campgroundPrice: priceNumber,
+      campgroundPrice: transaction.campground.price.toString(),
     });
   } catch (err) {
     res.status(500).json({
