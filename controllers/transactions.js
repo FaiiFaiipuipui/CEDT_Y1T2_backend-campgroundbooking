@@ -8,14 +8,14 @@ const { createPromptPayQR } = require("../utils/createPromptpayQR");
  * @desc create promptpayQR with req body
  * @route POST /api/v1/transactions/promptpayqr
  * @access Private
- * @param req.body : promptpayID, appointmentID
+ * @param req.body : appointmentID
  */
 exports.createPromptpayQR = async (req, res, next) => {
   try {
     console.log(req.body);
     const data = req.body;
 
-    if (!data.promptpayID || !data.appointmentID) {
+    if (!data.appointmentID) {
       const error = new Error(
         "promptpayID or appointmentID is missing in the request body"
       );
@@ -23,7 +23,10 @@ exports.createPromptpayQR = async (req, res, next) => {
       throw error;
     }
 
-    const appointment = await Appointment.findById(data.appointmentID);
+    const appointment = await Appointment.findById(data.appointmentID).populate({
+      path: "campground",
+      select: "name price promptpayTel",
+    });
 
     if (!appointment) {
       const error = new Error(
@@ -33,22 +36,13 @@ exports.createPromptpayQR = async (req, res, next) => {
       throw error;
     }
 
-    const campground = await Campground.findById(appointment.campground);
+    console.log(appointment);
+    console.log(appointment.campground);
+    console.log(appointment.campground.price.toString());
+    campgroundPrice = parseFloat(appointment.campground.price.toString());
 
-    if (!campground) {
-      const error = new Error(
-        `No campground with the ID of ${appointment.campground}`
-      );
-      error.code = 404;
-      throw error;
-    }
 
-    console.dir(campground.price, {
-      showHidden: false,
-      depth: null,
-      colors: true,
-    });
-    if (!campground.price) {
+    if (!campgroundPrice) {
       const error = new Error(
         `campground with the ID of ${appointment.campground} does not exist price attribute`
       );
@@ -57,7 +51,7 @@ exports.createPromptpayQR = async (req, res, next) => {
     }
 
     let returnData;
-    await createPromptPayQR(data.promptpayID, campground.price).then((data) => {
+    await createPromptPayQR(appointment.campground.promptpayTel, campgroundPrice).then((data) => {
       returnData = data;
       if (returnData === "error") {
         const error = new Error("QR code Creation Function failed");
