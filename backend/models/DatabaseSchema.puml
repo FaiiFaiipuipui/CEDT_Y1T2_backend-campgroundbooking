@@ -12,6 +12,7 @@ entity campground {
   region : string
   picture : string
   price : decimal128
+  promptpayTel : string
 }
 entity appointment {
   appointment_id : ObjectId <<PK>>
@@ -43,8 +44,6 @@ entity transaction {
   user : ObjectId <<FK>>
   appointment : ObjectId <<FK>>
 }
-
-
 
 entity transactionSlip {
   slip_id : ObjectId <<PK>>
